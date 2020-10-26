@@ -1,7 +1,7 @@
 ###########################
 # 6.0002 Problem Set 1a: Space Cows 
 # Name: Bilin Chen
-# Collaborators:
+# Collaborators: None
 # Time:
 
 from ps1_partition import get_partitions
