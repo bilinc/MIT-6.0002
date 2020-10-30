@@ -34,7 +34,6 @@ def load_cows(filename):
 		line = line.strip('\n').split(',')
 		
 		cows[line[0]] = int(line[1])
-	print(cows)
 
 	return cows
 
@@ -69,23 +68,31 @@ def greedy_cow_transport(cows,limit=10):
 	trip = []
 
 	available = limit
-	cows_left = list(cows.keys())
+
+	# becomes a sorted list of the keys based on their values
+	cows_left = sorted(cows, key=cows.get, reverse=True)
+	cows_copy = cows_left.copy()
 
 	# cows is a dict, by iterating through its objects it automatically does so with the keys
 	while len(cows_left) > 0:
 		for cow in cows_left:
-			print(cow)
+			
 			if cows[cow] <= available:
 				trip.append(cow)
 				# remove the weight of the cow from the available weight
 				available -= cows[cow]
 				# remove the cow from the list
-				cows_left.remove(cow)
+
+		# How to make this a one-liner?
+		for cow in trip:
+			cows_left.remove(cow)
 			
 		transport.append(trip)
 		trip = []
 		available = limit
 
+	print(cows)
+	print(cows_copy)
 	print(transport)
 
 
