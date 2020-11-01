@@ -97,8 +97,6 @@ def greedy_cow_transport(cows,limit=10):
 	# print(cows_copy)
 	print(transport)
 
-greedy_cow_transport(cows)
-
 
 # Problem 3
 def brute_force_cow_transport(cows,limit=10):
@@ -155,8 +153,7 @@ def brute_force_cow_transport(cows,limit=10):
 				best_alloc = partition
 		
 	print(best_alloc)			
-	
-brute_force_cow_transport(cows)			
+
 
 #partition = get_partitions(cows)
 #
@@ -180,4 +177,22 @@ def compare_cow_transport_algorithms():
 	Does not return anything.
 	"""
 	# TODO: Your code here
-	pass
+	cows = load_cows('ps1_cow_data.txt')
+	cows2 = load_cows('ps1_cow_data_2.txt')
+	
+	start = time.time()
+	brute_force_cow_transport(cows2)
+	end = time.time()
+	
+	time_brutef = end - start
+	
+	start = time.time()
+	greedy_cow_transport(cows2)
+	end = time.time()
+	
+	time_greedy = end - start
+	
+	print('Time brute force: %s' % (time_brutef))
+	print('Time greedy: %s' % (time_greedy))
+	
+compare_cow_transport_algorithms()
