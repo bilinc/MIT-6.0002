@@ -37,6 +37,8 @@ def load_cows(filename):
 
 	return cows
 
+# Load cow data
+cows = load_cows('ps1_cow_data.txt')
 
 # Problem 2
 def greedy_cow_transport(cows,limit=10):
@@ -70,12 +72,12 @@ def greedy_cow_transport(cows,limit=10):
 	available = limit
 
 	# becomes a sorted list of the keys based on their values
-	cows_left = sorted(cows, key=cows.get, reverse=True)
-	cows_copy = cows_left.copy()
+	cows_sorted = sorted(cows, key=cows.get, reverse=True)
+	cows_copy = cows_sorted.copy()
 
 	# cows is a dict, by iterating through its objects it automatically does so with the keys
-	while len(cows_left) > 0:
-		for cow in cows_left:
+	while len(cows_sorted) > 0:
+		for cow in cows_sorted:
 			
 			if cows[cow] <= available:
 				trip.append(cow)
@@ -85,20 +87,18 @@ def greedy_cow_transport(cows,limit=10):
 
 		# How to make this a one-liner?
 		for cow in trip:
-			cows_left.remove(cow)
+			cows_sorted.remove(cow)
 			
 		transport.append(trip)
 		trip = []
 		available = limit
 
-	print(cows)
-	print(cows_copy)
+	# print(cows)
+	# print(cows_copy)
 	print(transport)
 
-
-
-cows = load_cows('ps1_cow_data.txt')
 greedy_cow_transport(cows)
+
 
 # Problem 3
 def brute_force_cow_transport(cows,limit=10):
@@ -123,8 +123,48 @@ def brute_force_cow_transport(cows,limit=10):
 	trips
 	"""
 	# TODO: Your code here
-	pass
+	cows_sorted = sorted(cows, key=cows.get, reverse=True)
+	
+	# A generator object containing a list of lists
+	cow_partitions = get_partitions(cows)
+	
+	best_alloc = []
+	
+	# parition is one list of lists from the generator
+	for partition in cow_partitions:
+		# loop through every trip (list) in the partition (list of lists)
+		for trip in partition:
+			trip_weight = 0
+			# looping through each cow in the trip
+			for i in range(len(trip)):
+				# combining all the cow weights in a trip
+				trip_weight += cows[trip[i]]
+			# checking if the trip weight is outside of limit
+			if trip_weight > limit:
+				# exit this partition as it contains a trip outside the limit
+				break
 		
+		if trip_weight > limit:
+			continue
+		# save the partition with all valid trips and choose the one that minimizes the amount of trips
+		
+		if len(best_alloc) == 0:
+			best_alloc = partition
+		else:
+			if len(best_alloc) > len(partition):
+				best_alloc = partition
+		
+	print(best_alloc)			
+	
+brute_force_cow_transport(cows)			
+
+#partition = get_partitions(cows)
+#
+#print(next(partition))
+#print(next(partition))
+#print(next(partition))
+
+	
 # Problem 4
 def compare_cow_transport_algorithms():
 	"""
