@@ -22,12 +22,17 @@ def dp_make_weight(egg_weights, target_weight, memo = {}):
     
     Returns: int, smallest number of eggs needed to make target weight
     """
-    # TODO: Your code here
-    
-	if memo == None:
-		memo = {}
+	# TODO: Your code here
+    if memo == None:
+        memo = {}
+
+    if (egg_weights, target_weight) in memo:
+        result = memo[(egg_weights, target_weight)]
 	
-	if 
+    elif target_weight == 0:
+        result = 0
+    
+    return result
 
 # EXAMPLE TESTING CODE, feel free to add more if you'd like
 if __name__ == '__main__':
