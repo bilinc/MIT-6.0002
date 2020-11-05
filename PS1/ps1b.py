@@ -1,7 +1,7 @@
 ###########################
 # 6.0002 Problem Set 1b: Space Change
-# Name:
-# Collaborators:
+# Name: Bilin Chen
+# Collaborators: None
 # Time:
 # Author: charz, cdenise
 
