@@ -23,15 +23,30 @@ def dp_make_weight(egg_weights, target_weight, memo = {}):
     Returns: int, smallest number of eggs needed to make target weight
     """
 	# TODO: Your code here
+    eggs = [0, 0, 0, 0]
     if memo == None:
         memo = {}
 
-    if (egg_weights, target_weight) in memo:
-        result = memo[(egg_weights, target_weight)]
+    if (eggs, target_weight) in memo:
+        result = memo[(eggs, target_weight)]
 	
     elif target_weight == 0:
         result = 0
     
+    else:
+        # take the maximum weight egg, if it excedes the current limit, take the next heaviest, and so on...
+        while target_weight != 0:
+            if egg_weights[3] < target_weight:
+                pass
+            elif egg_weights[2] < target_weight:
+                pass
+            elif egg_weights[1] < target_weight:
+                pass
+            elif egg_weights[0] < target_weight:
+                pass
+        
+    
+    # dict, key = egg_weight, value = nr of eggs
     return result
 
 # EXAMPLE TESTING CODE, feel free to add more if you'd like
