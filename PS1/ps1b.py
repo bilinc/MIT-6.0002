@@ -23,7 +23,9 @@ def dp_make_weight(egg_weights, target_weight, memo = {}):
     Returns: int, smallest number of eggs needed to make target weight
     """
 	# TODO: Your code here
-    eggs = [0, 0, 0, 0]
+    
+    ''' 
+    # Greedy solution
     if memo == None:
         memo = {}
 
@@ -41,32 +43,24 @@ def dp_make_weight(egg_weights, target_weight, memo = {}):
             
         else:
             # Add an egg to the taken list
-            eggs[egg_weights.index(nextEgg)] += 1
             
             numEggs = dp_make_weight(egg_weights, target_weight - nextEgg, memo) + 1
             
             memo[(egg_weights, target_weight)] = numEggs
-            
     return numEggs
-            
-        # take the maximum weight egg, if it excedes the current limit, take the next heaviest, and so on...
-#        while target_weight != 0:
-#            if egg_weights[3] < target_weight:
-#                pass
-#            elif egg_weights[2] < target_weight:
-#                pass
-#            elif egg_weights[1] < target_weight:
-#                pass
-#            elif egg_weights[0] < target_weight:
-#                pass
-        
+    # not optimal when for example egg_weights = (1, 9, 90, 91) and target_weight = 99
+    '''
+    # dynamic programming, bottom up
+    dp = [0 for i in range(target_weight + 1)]
+    for i in range(1, target_weight + 1):
+        dp[i] = 1 + min([dp[i-weight] for weight in egg_weights if weight <= i])
     
-    # dict, key = egg_weight, value = nr of eggs
-#    numEggs = result
-#    return result
+    return dp[target_weight]
+
 
 # EXAMPLE TESTING CODE, feel free to add more if you'd like
 if __name__ == '__main__':
+    print('---Test 1---')
     egg_weights = (1, 5, 10, 25)
     n = 99
     print("Egg weights = (1, 5, 10, 25)")
@@ -75,6 +69,12 @@ if __name__ == '__main__':
     print("Actual output:", dp_make_weight(egg_weights, n))
     print()
     
-    
-    
+    print('---Test 2---')
+    egg_weights = (1, 9, 90, 91)
+    n = 99
+    print("Egg weights = (1, 9, 90, 91)")
+    print("n = 99")
+    print("Expected ouput:29 (1*90 + 1*9 = 99)")
+    print("Actual output:", dp_make_weight(egg_weights, n))
+    print()
     
