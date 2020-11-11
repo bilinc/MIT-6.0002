@@ -1,8 +1,8 @@
 # 6.0002 Problem Set 5
 # Graph optimization
-# Name:
-# Collaborators:
-# Time:
+# Name: Bilin Chen
+# Collaborators: None
+# Date: 2020-11-11
 
 #
 # Finding shortest paths through MIT buildings
