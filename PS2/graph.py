@@ -75,7 +75,7 @@ class Digraph(object):
     def __init__(self):
         self.nodes = set([])
         self.edges = {}  # must be a dict of Node -> list of edges
-
+        
     def __str__(self):
         edge_strs = []
         for edges in self.edges.values():
@@ -94,14 +94,40 @@ class Digraph(object):
         """Adds a Node object to the Digraph. Raises a ValueError if it is
         already in the graph."""
         if node in self.nodes:
-        	raise ValueError("ValueError: Node already in graph.")
+        	raise ValueError("Node already in graph.")
         else:
         	self.nodes.add(node)
+        	self.edges[node] = []
 
     def add_edge(self, edge):
         """Adds an Edge or WeightedEdge instance to the Digraph. Raises a
         ValueError if either of the nodes associated with the edge is not
         in the graph."""
+        self.edge = edge
+        src = self.edge.get_source()
+        dst = self.edge.get_destination()
+
+        if not (src in self.nodes and dst in self.nodes):
+        	raise ValueError("Nodes not in graph.")
+
+        self.edges[src].append(self.edge)
+
+    def __str__(self):
+    	result = ''
+    	# for src in self.nodes:
+    	# 	for e in self.edges[src]:
+    	# 		result += result + str(e) + '\n'
+    	# print(self.edges)
+    	for src in self.edges:
+    		# print(src)
+    		for w_edge in self.edges[src]:
+    			# print(w_edge)
+    			result += str(w_edge) + '\n'
+    	print(result[:-1])
+
+    	# print(self.edges[Node('a')][0].get_total_distance())
+    	return result[:-1]
+
         
 
 
