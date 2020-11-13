@@ -19,7 +19,8 @@ from graph import Digraph, Node, WeightedEdge
 # do the graph's edges represent? Where are the distances
 # represented?
 #
-# Answer:
+# Answer: The nodes represent the buildings and locations. The edges are the roads connecting the buildings and the distances is
+# represented by the weight or cost.
 #
 
 
