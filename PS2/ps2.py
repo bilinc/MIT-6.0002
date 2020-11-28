@@ -46,9 +46,50 @@ def load_map(map_filename):
 
     # TODO
     print("Loading map from file...")
+    
+    f = open(map_filename, 'r')
+
+    mit_digraph = Digraph()
+
+    for line in f:
+    	# create a list of the numbers by splitting at the blank space
+    	values = line.split()
+
+    	# add the nodes to the digraph
+    	try:
+    		mit_digraph.add_node(values[0])
+    	except ValueError:
+    		# value error will be raised if the node already exists, so just do
+    		pass
+
+    	try:
+    		mit_digraph.add_node(values[1])
+    	except ValueError:
+    		# value error will be raised if the node already exists, so just do
+    		pass
+    		
+
+    	# created the weighted edge
+    	w_edge = WeightedEdge(values[0], values[1], values[2], values[3])
+
+    	# add weighted edge to digraph
+    	mit_digraph.add_edge(w_edge)
+    
+    return mit_digraph
+
+
 
 # Problem 2c: Testing load_map
 # Include the lines used to test load_map below, but comment them out
+test_map = load_map("test_load_map.txt")
+print('Test 1: The connected nodes and edges')
+print(test_map)
+
+print('Test 2: All the nodes')
+print(test_map.nodes)
+
+print('Test 3: All the edges')
+print(test_map.edges)
 
 
 #
@@ -217,5 +258,5 @@ class Ps2Test(unittest.TestCase):
         self._test_impossible_path('10', '32', total_dist=100)
 
 
-if __name__ == "__main__":
-    unittest.main()
+# if __name__ == "__main__":
+#     unittest.main()

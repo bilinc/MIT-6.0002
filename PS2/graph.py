@@ -76,13 +76,13 @@ class Digraph(object):
         self.nodes = set([])
         self.edges = {}  # must be a dict of Node -> list of edges
         
-    def __str__(self):
-        edge_strs = []
-        for edges in self.edges.values():
-            for edge in edges:
-                edge_strs.append(str(edge))
-        edge_strs = sorted(edge_strs)  # sort alphabetically
-        return '\n'.join(edge_strs)  # concat edge_strs with "\n"s between them
+    # def __str__(self):
+    #     edge_strs = []
+    #     for edges in self.edges.values():
+    #         for edge in edges:
+    #             edge_strs.append(str(edge))
+    #     edge_strs = sorted(edge_strs)  # sort alphabetically
+    #     return '\n'.join(edge_strs)  # concat edge_strs with "\n"s between them
 
     def get_edges_for_node(self, node):
         return self.edges[node]
@@ -123,9 +123,7 @@ class Digraph(object):
     		for w_edge in self.edges[src]:
     			# print(w_edge)
     			result += str(w_edge) + '\n'
-    	print(result[:-1])
 
-    	# print(self.edges[Node('a')][0].get_total_distance())
     	return result[:-1]
 
         
