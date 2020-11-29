@@ -100,7 +100,10 @@ print(test_map.edges)
 # What is the objective function for this problem? What are the constraints?
 #
 # Answer:
-#
+# To minimize the total distance traveled
+
+# Constraints:
+# Cannot exceed maximum distance outdoors.
 
 # Problem 3b: Implement get_best_path
 def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
