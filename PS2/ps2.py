@@ -52,28 +52,28 @@ def load_map(map_filename):
     mit_digraph = Digraph()
 
     for line in f:
-    	# create a list of the numbers by splitting at the blank space
-    	values = line.split()
+        # create a list of the numbers by splitting at the blank space
+        values = line.split()
 
-    	# add the nodes to the digraph
-    	try:
-    		mit_digraph.add_node(values[0])
-    	except ValueError:
-    		# value error will be raised if the node already exists, so just do
-    		pass
+        # add the nodes to the digraph
+        try:
+            mit_digraph.add_node(values[0])
+        except ValueError:
+            # value error will be raised if the node already exists, so just do
+            pass
 
-    	try:
-    		mit_digraph.add_node(values[1])
-    	except ValueError:
-    		# value error will be raised if the node already exists, so just do
-    		pass
-    		
+        try:
+            mit_digraph.add_node(values[1])
+        except ValueError:
+            # value error will be raised if the node already exists, so just do
+            pass
+            
 
-    	# created the weighted edge
-    	w_edge = WeightedEdge(values[0], values[1], values[2], values[3])
+        # created the weighted edge
+        w_edge = WeightedEdge(values[0], values[1], values[2], values[3])
 
-    	# add weighted edge to digraph
-    	mit_digraph.add_edge(w_edge)
+        # add weighted edge to digraph
+        mit_digraph.add_edge(w_edge)
     
     return mit_digraph
 
@@ -141,20 +141,36 @@ def get_best_path(digraph, start, end,  path, max_dist_outdoors, best_dist,
     """
     # TODO
     
+
     # if start and end are not valid nodes:
-    # 		raise an error
+    #       raise an error
+    if not(digraph.has_node(start) and digraph.has_node(end)):
+        raise ValueError("Nodes does not exist in the graph!")
 
     # elif start and end are the same node:
-    # 		update the global variables appropriately
-
+    #       update the global variables appropriately
+    elif start == end:
+        return (start,)
     # else:
-    #		for all the child nodes of start
-    # 			construct a path including that node
-    # 			recursively solve the rest of the path, from the child node to the end node
+    #       for all the child nodes of start
+    #           construct a path including that node
+    #           recursively solve the rest of the path, from the child node to the end node
+    else:
+        children = digraph.get_edges_for_node(start)    # children is a list containing WeightedEdge objects
+        for child_node in children:
+            path.append(child_node.get_destination())
+            print(path)
+            if end in path:
+                if shortest == None and len(path) < len(shortest):
+                    shortest = path
+
+
 
     # return the shortest path
-
-
+print("---------Problem 3b: Implement get_best_path---------")
+print("Test 1")
+x = get_best_path(test_map, 'a', 'c', [], 3, 3, (1,))
+print(x)
 # Problem 3c: Implement directed_dfs
 def directed_dfs(digraph, start, end, max_total_dist, max_dist_outdoors):
     """
