@@ -106,7 +106,7 @@ print(test_map.edges)
 # Cannot exceed maximum distance outdoors.
 
 # Problem 3b: Implement get_best_path
-def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
+def get_best_path(digraph, start, end,  path, max_dist_outdoors, best_dist,
                   best_path):
     """
     Finds the shortest path between buildings subject to constraints.
@@ -119,9 +119,8 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
         end: string
             Building number at which to end
         path: list composed of [[list of strings], int, int]
-            Represents the current path of nodes being traversed. Contains
-            a list of node names, total distance traveled, and total
-            distance outdoors.
+            Represents the current path of nodes being traversed. 
+            Contains a list of node names, total distance traveled, and total distance outdoors.
         max_dist_outdoors: int
             Maximum distance spent outdoors on a path
         best_dist: int
@@ -141,7 +140,19 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
         max_dist_outdoors constraints, then return None.
     """
     # TODO
-    pass
+    
+    # if start and end are not valid nodes:
+    # 		raise an error
+
+    # elif start and end are the same node:
+    # 		update the global variables appropriately
+
+    # else:
+    #		for all the child nodes of start
+    # 			construct a path including that node
+    # 			recursively solve the rest of the path, from the child node to the end node
+
+    # return the shortest path
 
 
 # Problem 3c: Implement directed_dfs
