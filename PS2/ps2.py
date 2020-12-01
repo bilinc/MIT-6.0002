@@ -107,6 +107,18 @@ print(test_map.edges)
 # Cannot exceed maximum distance outdoors.
 
 
+# My helper function for problem 3b
+def printPath(path):
+    """Assumes path is a list of nodes"""
+    result = ""
+    for i in range(len(path)):
+        result = result + str(path[i])
+        if i != len(path) - 1:
+            result = result + '->'
+    return result
+
+# print(printPath(['a','b','c','d']))
+
 
 # Problem 3b: Implement get_best_path
 def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
