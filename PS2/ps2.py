@@ -82,6 +82,7 @@ def load_map(map_filename):
 # Problem 2c: Testing load_map
 # Include the lines used to test load_map below, but comment them out
 test_map = load_map("test_load_map.txt")
+'''
 print('Test 1: The connected nodes and edges')
 print(test_map)
 
@@ -90,7 +91,7 @@ print(test_map.nodes)
 
 print('Test 3: All the edges')
 print(test_map.edges)
-
+'''
 
 #
 # Problem 3: Finding the Shorest Path using Optimized Search Method
@@ -105,8 +106,10 @@ print(test_map.edges)
 # Constraints:
 # Cannot exceed maximum distance outdoors.
 
+
+
 # Problem 3b: Implement get_best_path
-def get_best_path(digraph, start, end,  path, max_dist_outdoors, best_dist,
+def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
                   best_path):
     """
     Finds the shortest path between buildings subject to constraints.
@@ -140,8 +143,10 @@ def get_best_path(digraph, start, end,  path, max_dist_outdoors, best_dist,
         max_dist_outdoors constraints, then return None.
     """
     # TODO
-    
+    global new_path
+    new_path = None
 
+    path[0] = path[0] + [start]
     # if start and end are not valid nodes:
     #       raise an error
     if not(digraph.has_node(start) and digraph.has_node(end)):
@@ -150,27 +155,34 @@ def get_best_path(digraph, start, end,  path, max_dist_outdoors, best_dist,
     # elif start and end are the same node:
     #       update the global variables appropriately
     elif start == end:
-        return (start,)
+        return path
     # else:
     #       for all the child nodes of start
     #           construct a path including that node
     #           recursively solve the rest of the path, from the child node to the end node
     else:
         children = digraph.get_edges_for_node(start)    # children is a list containing WeightedEdge objects
+        
         for child_node in children:
-            path.append(child_node.get_destination())
-            print(path)
-            if end in path:
-                if shortest == None and len(path) < len(shortest):
-                    shortest = path
+            if child_node not in path:  # avoid cycles
+                # path.append(child_node.get_destination())
+                # print(path)
+                # if end in path:
+                if best_path == None or len(path) < len(best_path):
+                    new_path = get_best_path(digraph, child_node, end, path, max_dist_outdoors, best_dist, best_path)
+                    best_path = path
+                if new_path != None:
+                    best_path = new_path
 
-
+    return best_path
 
     # return the shortest path
 print("---------Problem 3b: Implement get_best_path---------")
 print("Test 1")
-x = get_best_path(test_map, 'a', 'c', [], 3, 3, (1,))
+x = get_best_path(test_map, 'a', 'c', [[], 0, 0], 3, 3, None)
 print(x)
+
+
 # Problem 3c: Implement directed_dfs
 def directed_dfs(digraph, start, end, max_total_dist, max_dist_outdoors):
     """
