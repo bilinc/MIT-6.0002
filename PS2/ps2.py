@@ -177,9 +177,7 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
         
         for child_node in children:
             if child_node not in path:  # avoid cycles
-                # path.append(child_node.get_destination())
-                # print(path)
-                # if end in path:
+
                 if best_path == None or len(path) < len(best_path):
                     new_path = get_best_path(digraph, child_node, end, path, max_dist_outdoors, best_dist, best_path)
                     best_path = path
