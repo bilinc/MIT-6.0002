@@ -175,7 +175,10 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
     else:
         children = digraph.get_edges_for_node(start)    # children is a list containing WeightedEdge objects
         
+        # loop over all edges I can reach
         for child_node in children:
+            print(child_node.src, child_node.dest)
+            
             if child_node not in path:  # avoid cycles
 
                 if best_path == None or len(path) < len(best_path):
