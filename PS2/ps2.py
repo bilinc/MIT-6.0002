@@ -155,8 +155,9 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
         max_dist_outdoors constraints, then return None.
     """
     # TODO
-    global new_path
-    new_path = None
+    global shortest
+    shortest = None
+#    new_path = None
 
     path[0] = path[0] + [start]
     # if start and end are not valid nodes:
@@ -173,23 +174,32 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
     #           construct a path including that node
     #           recursively solve the rest of the path, from the child node to the end node
     else:
-        children = digraph.get_edges_for_node(start)    # children is a list containing WeightedEdge objects
+#        children = digraph.get_edges_for_node(start)    
         
         # loop over all edges I can reach
-        for child_node in children:
-            print(child_node.src, child_node.dest)
+        for child_node in digraph.get_edges_for_node(start): # list containing WeightedEdge objects
             
-            if child_node not in path:  # avoid cycles
+            print('Child node: ', child_node)
+            
+            print('Source: ', child_node.src, 'Destination: ', child_node.dest)
+            
+            path[1] = path[1] + int(child_node.get_total_distance())
+            path[2] = path[2] + int(child_node.get_outdoor_distance())
+            
+            if child_node.dest not in path[0]:  # avoid cycles
 
-                if best_path == None or len(path) < len(best_path):
-                    new_path = get_best_path(digraph, child_node, end, path, max_dist_outdoors, best_dist, best_path)
-                    best_path = path
-                if new_path != None:
-                    best_path = new_path
+                if shortest == None or path[1] < shortest[1]:
+                    start = child_node.dest
+                    
+                    new_path = get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist, shortest)
+#                    shortest = path
+                    
+                    if new_path != None:
+                        shortest = new_path
 
-    return best_path
+    return shortest
 
-    # return the shortest path
+    
 print("---------Problem 3b: Implement get_best_path---------")
 print("Test 1")
 x = get_best_path(test_map, 'a', 'c', [[], 0, 0], 3, 3, None)
