@@ -109,7 +109,9 @@ print(test_map.edges)
 
 # My helper function for problem 3b
 def printPath(path):
-    """Assumes path is a list of nodes"""
+    """
+    Assumes path is a list of nodes
+    """
     result = ""
     for i in range(len(path)):
         result = result + str(path[i])
@@ -117,12 +119,10 @@ def printPath(path):
             result = result + '->'
     return result
 
-# print(printPath(['a','b','c','d']))
-
 
 # Problem 3b: Implement get_best_path
 def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
-                  best_path):
+                  best_path, toPrint = False):
     """
     Finds the shortest path between buildings subject to constraints.
 
@@ -160,6 +160,8 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
 #    new_path = None
 
     path[0] = path[0] + [start]
+    if toPrint:
+        print('Current DFS path:', printPath(path[0]))
     # if start and end are not valid nodes:
     #       raise an error
     if not(digraph.has_node(start) and digraph.has_node(end)):
@@ -168,6 +170,7 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
     # elif start and end are the same node:
     #       update the global variables appropriately
     elif start == end:
+        shortest = None
         return path
     # else:
     #       for all the child nodes of start
@@ -177,33 +180,53 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
 #        children = digraph.get_edges_for_node(start)    
         
         # loop over all edges I can reach
+        
+        # Problem: does not reset properly after going up
+        # does not reset distance, does not check for shortest distance
         for child_node in digraph.get_edges_for_node(start): # list containing WeightedEdge objects
             
             print('Child node: ', child_node)
-            
             print('Source: ', child_node.src, 'Destination: ', child_node.dest)
             
-            path[1] = path[1] + int(child_node.get_total_distance())
-            path[2] = path[2] + int(child_node.get_outdoor_distance())
+            
             
             if child_node.dest not in path[0]:  # avoid cycles
-
+                path[1] = path[1] + int(child_node.get_total_distance())
+                path[2] = path[2] + int(child_node.get_outdoor_distance())
+                
+                # Not checking the most optimal travelled distance correctly
+                
+                # If we don't have a solution or if we have a better solution than the currently best one
                 if shortest == None or path[1] < shortest[1]:
+                    
+                    # start recursion from the node we are currently on
                     start = child_node.dest
-                    
-                    new_path = get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist, shortest)
-#                    shortest = path
-                    
-                    if new_path != None:
-                        shortest = new_path
+                    new_path = get_best_path(digraph, start, end, path, max_dist_outdoors, 
+                                             best_dist, shortest, toPrint = True)
 
+                    if new_path != None:
+                        shortest = new_path.copy()
+            elif toPrint:
+                print('Already visited', child_node.dest)
     return shortest
 
-    
+
+
 print("---------Problem 3b: Implement get_best_path---------")
 print("Test 1")
-x = get_best_path(test_map, 'a', 'c', [[], 0, 0], 3, 3, None)
-print(x)
+def shortest_path(graph, start, end, toPrint = False):
+    return get_best_path(graph, start, end, [[], 0, 0], 3, 3, None, toPrint)
+
+def test_sp(graph, source, destination):
+    sp = shortest_path(graph, graph.get_node(source), graph.get_node(destination), toPrint = True)
+    
+    if sp != None:
+        print('Shortest path from', source, 'to', destination, 'is', printPath(sp[0]))
+    else:
+        print('There is no path from', source, 'to', destination)
+        
+test_sp(test_map, 'a', 'c')
+
 
 
 # Problem 3c: Implement directed_dfs

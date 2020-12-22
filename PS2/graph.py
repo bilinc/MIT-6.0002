@@ -111,7 +111,16 @@ class Digraph(object):
         	raise ValueError("Nodes not in graph.")
 
         self.edges[src].append(self.edge)
-
+    
+    def has_node(self, node):
+        return node in self.edges
+    
+    def get_node(self, name):
+        for n in self.edges:
+            if n == name:
+                return n
+        raise NameError(name)
+        
     def __str__(self):
     	result = ''
     	# for src in self.nodes:
