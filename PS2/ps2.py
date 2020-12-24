@@ -158,15 +158,15 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
     global shortest
     shortest = tuple()
     
-    path_path = path[0]
+    path_current = path[0]
     path_distance_traveled = path[1]
     path_distance_outdoor = path[2]
     
-    path_path += [start]
+    path_current += [start]
     
     shortest += (start,)
     if toPrint:
-        print('Current DFS path:', printPath(path_path))
+        print('Current DFS path:', printPath(path_current))
     # if start and end are not valid nodes:
     #       raise an error
     if not(digraph.has_node(start) and digraph.has_node(end)):
@@ -191,7 +191,6 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
             print('Child node: ', child_node)
             print('Source: ', child_node.src, 'Destination: ', child_node.dest)
             
-            
             if child_node.dest not in path[0]:  # avoid cycles
                 path_distance_traveled = path_distance_traveled + int(child_node.get_total_distance())
                 path_distance_outdoor = path_distance_outdoor + int(child_node.get_outdoor_distance())
@@ -199,16 +198,20 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
                 # Not checking the most optimal travelled distance correctly
                 
                 # If we don't have a solution or if we have a better solution than the currently best one
-                if best_path == None or path_distance_traveled < best_dist:
+                if best_path == None or path_current < best_path:
                     
-                    # start recursion from the node we are currently on
-                    start = child_node.dest
-                    best_path, best_dist, max_dist_outdoors = path[0], path[1], path[2]
                     
-                    new_path = get_best_path(digraph, start, end, path, max_dist_outdoors, 
-                                             best_dist, best_path, toPrint = True)
+                    	
+	               # start recursion from the node we are currently on
+	                start = child_node.dest
+	                best_path, best_dist, max_dist_outdoors = path[0], path[1], path[2]
+	                
+	                new_path = get_best_path(digraph, start, end, path, max_dist_outdoors, 
+	                                             best_dist, best_path, toPrint = True)
 
-                    if new_path != None:
+                if new_path != None:
+                    # need to find the shortest path and also least distance
+                    if path_distance_traveled < best_dist or best_dist == None:
                         shortest = new_path.copy()
             elif toPrint:
                 print('Already visited', child_node.dest)
@@ -225,7 +228,7 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
 print("---------Problem 3b: Implement get_best_path---------")
 print("Test 1")
 def shortest_path(graph, start, end, toPrint = False):
-    return get_best_path(graph, start, end, [[], 0, 0], 3, 3, None, toPrint)
+    return get_best_path(graph, start, end, [[], 0, 0], 3, None, None, toPrint)
 
 def test_sp(graph, source, destination):
     sp = shortest_path(graph, graph.get_node(source), graph.get_node(destination), toPrint = True)
