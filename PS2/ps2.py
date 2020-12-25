@@ -155,73 +155,73 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
         max_dist_outdoors constraints, then return None.
     """
     # TODO
-    global shortest
-    shortest = tuple()
+#    global shortest
+#    shortest = tuple()
     
-    path_current = path[0]
-    path_distance_traveled = path[1]
-    path_distance_outdoor = path[2]
+#    path_current = path[0]              # the current path of nodes being traversed
+    path = path.copy()
     
-    path_current += [start]
+    path_distance_traveled = path[1]    # total distance traveled so far
+    path_distance_outdoor = path[2]     # total distance ourdoors so far
     
-    shortest += (start,)
+    
+    path[0] = path[0] + [start]
+    
+#    shortest += (start,)
     if toPrint:
-        print('Current DFS path:', printPath(path_current))
+        print('Current DFS path:', printPath(path[0]))
     # if start and end are not valid nodes:
     #       raise an error
     if not(digraph.has_node(start) and digraph.has_node(end)):
         raise ValueError("Nodes does not exist in the graph!")
-
+    
     elif start == end:
-        
-        return path
+        return tuple(path[0])
     # else:
     #       for all the child nodes of start
     #           construct a path including that node
     #           recursively solve the rest of the path, from the child node to the end node
-    else:
-#        children = digraph.get_edges_for_node(start)    
+    
+    # loop over all edges I can reach
+    
+    # Problem: does not reset properly after going up
+    # does not reset distance, does not check for shortest distance
+    for child_node in digraph.get_edges_for_node(start): # list containing WeightedEdge objects
         
-        # loop over all edges I can reach
+        print('Child node: ', child_node)
+        print('Source: ', child_node.src, 'Destination: ', child_node.dest)
         
-        # Problem: does not reset properly after going up
-        # does not reset distance, does not check for shortest distance
-        for child_node in digraph.get_edges_for_node(start): # list containing WeightedEdge objects
+        if child_node.dest not in path[0]:  # avoid cycles
+            path_distance_traveled = path_distance_traveled + int(child_node.get_total_distance())
+            path_distance_outdoor = path_distance_outdoor + int(child_node.get_outdoor_distance())
             
-            print('Child node: ', child_node)
-            print('Source: ', child_node.src, 'Destination: ', child_node.dest)
+            # Not checking the most optimal travelled distance correctly
             
-            if child_node.dest not in path[0]:  # avoid cycles
-                path_distance_traveled = path_distance_traveled + int(child_node.get_total_distance())
-                path_distance_outdoor = path_distance_outdoor + int(child_node.get_outdoor_distance())
+            # If we don't have a solution or if we have a better solution than the currently best one
+            if best_path == None or len(path[0]) < len(best_path):
                 
-                # Not checking the most optimal travelled distance correctly
-                
-                # If we don't have a solution or if we have a better solution than the currently best one
-                if best_path == None or path_current < best_path:
-                    
-                    
-                    	
-	               # start recursion from the node we are currently on
-	                start = child_node.dest
-	                best_path, best_dist, max_dist_outdoors = path[0], path[1], path[2]
+#                start recursion from the node we are currently on
+#	            start = child_node.dest
+#	            best_path, best_dist, max_dist_outdoors = path[0], path[1], path[2]
 	                
-	                new_path = get_best_path(digraph, start, end, path, max_dist_outdoors, 
+                new_path = get_best_path(digraph, child_node.dest, end, path, max_dist_outdoors, 
 	                                             best_dist, best_path, toPrint = True)
 
                 if new_path != None:
                     # need to find the shortest path and also least distance
-                    if path_distance_traveled < best_dist or best_dist == None:
-                        shortest = new_path.copy()
+                    # if path_distance_traveled < best_dist or best_dist == None:
+                    best_path = new_path
+                    
             elif toPrint:
                 print('Already visited', child_node.dest)
     
+    return tuple(best_path)
     # If a shortest path exist then return it, else return None
     # shortest is a tuple containing the connecting edges
-    if shortest:
-        return shortest
-    else:
-        return None
+#    if shortest:
+#        return shortest
+#    else:
+#        return None
 
 
 
@@ -234,7 +234,7 @@ def test_sp(graph, source, destination):
     sp = shortest_path(graph, graph.get_node(source), graph.get_node(destination), toPrint = True)
     
     if sp != None:
-        print('Shortest path from', source, 'to', destination, 'is', printPath(sp[0]))
+        print('Shortest path from', source, 'to', destination, 'is', printPath(sp))
     else:
         print('There is no path from', source, 'to', destination)
         
