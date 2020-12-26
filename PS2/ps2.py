@@ -136,7 +136,7 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
         path: list composed of [[list of strings], int, int]
             Represents the current path of nodes being traversed. 
             Contains a list of node names, total distance traveled, and total distance outdoors.
-        max_dist_outdoors: int
+        max_dist_outdoors: int (*constant)
             Maximum distance spent outdoors on a path
         best_dist: int
             The smallest distance between the original start and end node
@@ -155,28 +155,31 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
         max_dist_outdoors constraints, then return None.
     """
     # TODO
-#    global shortest
-#    shortest = tuple()
+    global shortest_dist
+    shortest_dist = best_dist
     
-#    path_current = path[0]              # the current path of nodes being traversed
-    path = path.copy()
+#   § path_current = path[0]              # the current path of nodes being traversed
+    path_copy = path.copy()
     
-    path_distance_traveled = path[1]    # total distance traveled so far
-    path_distance_outdoor = path[2]     # total distance ourdoors so far
+#    path_distance_traveled = path[1]    # total distance traveled so far
+#    path_distance_outdoor = path[2]     # total distance ourdoors so far
     
     
-    path[0] = path[0] + [start]
+    path_copy[0] = path_copy[0] + [start]
     
 #    shortest += (start,)
     if toPrint:
-        print('Current DFS path:', printPath(path[0]))
+        print('Current DFS path:', printPath(path_copy[0]))
     # if start and end are not valid nodes:
     #       raise an error
     if not(digraph.has_node(start) and digraph.has_node(end)):
         raise ValueError("Nodes does not exist in the graph!")
     
     elif start == end:
-        return tuple(path[0])
+        if shortest_dist == None or path_copy[1] < shortest_dist:
+            shortest_dist = path_copy[1]
+
+        return tuple(path_copy[0])
     # else:
     #       for all the child nodes of start
     #           construct a path including that node
@@ -191,25 +194,27 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
         print('Child node: ', child_node)
         print('Source: ', child_node.src, 'Destination: ', child_node.dest)
         
-        if child_node.dest not in path[0]:  # avoid cycles
-            path_distance_traveled = path_distance_traveled + int(child_node.get_total_distance())
-            path_distance_outdoor = path_distance_outdoor + int(child_node.get_outdoor_distance())
+        if child_node.dest not in path_copy[0]:  # avoid cycles
+            path_copy[1] = path[1] + int(child_node.get_total_distance())
+            path_copy[2] = path[2] + int(child_node.get_outdoor_distance())
             
             # Not checking the most optimal travelled distance correctly
             
             # If we don't have a solution or if we have a better solution than the currently best one
-            if best_path == None or len(path[0]) < len(best_path):
+            if best_path == None or best_dist == None or path_copy[1] < shortest_dist: #len(path[0]) < len(best_path):
                 
 #                start recursion from the node we are currently on
 #	            start = child_node.dest
 #	            best_path, best_dist, max_dist_outdoors = path[0], path[1], path[2]
-	                
-                new_path = get_best_path(digraph, child_node.dest, end, path, max_dist_outdoors, 
-	                                             best_dist, best_path, toPrint = True)
+#                new_dist = path[1]
+                new_path = get_best_path(digraph, child_node.dest, end, path_copy, max_dist_outdoors, 
+	                                             shortest_dist, best_path, toPrint = True)
 
                 if new_path != None:
                     # need to find the shortest path and also least distance
-                    # if path_distance_traveled < best_dist or best_dist == None:
+#                    if best_dist == None or new_dist < best_dist:
+#                        best_dist = new_dist
+                    
                     best_path = new_path
                     
             elif toPrint:
