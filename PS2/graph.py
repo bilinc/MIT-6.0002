@@ -112,9 +112,6 @@ class Digraph(object):
 
         self.edges[src].append(self.edge)
     
-    def has_node(self, node):
-        return node in self.edges
-    
     def get_node(self, name):
         for n in self.edges:
             if n == name:
