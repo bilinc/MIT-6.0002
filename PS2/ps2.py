@@ -198,6 +198,14 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
             path_copy[1] = path[1] + int(child_node.get_total_distance())
             path_copy[2] = path[2] + int(child_node.get_outdoor_distance())
             
+            # if the outdoor contstraint is broken, return None path
+            if path_copy[2] > max_dist_outdoors:
+                return None
+            
+            # if a path is longer than the shortest path found so far, then you don't have to go further
+            if shortest_dist != None and path_copy[1] > shortest_dist:
+                break
+            
             # Not checking the most optimal travelled distance correctly
             
             # If we don't have a solution or if we have a better solution than the currently best one
@@ -221,12 +229,6 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
                 print('Already visited', child_node.dest)
     
     return tuple(best_path)
-    # If a shortest path exist then return it, else return None
-    # shortest is a tuple containing the connecting edges
-#    if shortest:
-#        return shortest
-#    else:
-#        return None
 
 
 
@@ -277,8 +279,13 @@ def directed_dfs(digraph, start, end, max_total_dist, max_dist_outdoors):
         max_dist_outdoors constraints, then raises a ValueError.
     """
     # TODO
-    pass
-
+    shortest_path = get_best_path(digraph, start, end, [[], 0, 0], max_dist_outdoors, None, None, toPrint=True)
+    
+    if shortest_path == None:
+        raise ValueError("No shortest path found following the constraints")
+    else:
+        return list(shortest_path)
+    
 
 # ================================================================
 # Begin tests -- you do not need to modify anything below this line
@@ -364,5 +371,5 @@ class Ps2Test(unittest.TestCase):
         self._test_impossible_path('10', '32', total_dist=100)
 
 
-# if __name__ == "__main__":
-#     unittest.main()
+#if __name__ == "__main__":
+#    unittest.main()
