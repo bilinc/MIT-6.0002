@@ -155,24 +155,25 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
         max_dist_outdoors constraints, then return None.
     """
     # TODO
+    # Creating global variable to keep track of the best distance over all local frames
     global shortest_dist
     shortest_dist = best_dist
-    
-#   § path_current = path[0]              # the current path of nodes being traversed
-    path_copy = path.copy()
-    
-#    path_distance_traveled = path[1]    # total distance traveled so far
-#    path_distance_outdoor = path[2]     # total distance ourdoors so far
+
+    path_copy = path.copy()    
+
+#    path[0]        the current path of nodes being traversed
+#    path[1]        total distance traveled so far
+#    path[2]        total distance ourdoors so far
     
     
     path_copy[0] = path_copy[0] + [start]
     
-#    shortest += (start,)
     if toPrint:
         print('Current DFS path:', printPath(path_copy[0]))
+    
     # if start and end are not valid nodes:
     #       raise an error
-    if not(digraph.has_node(start) and digraph.has_node(end)):
+    if not(digraph.has_node(start)) or not(digraph.has_node(end)):
         raise ValueError("Nodes does not exist in the graph!")
     
     elif start == end:
@@ -211,18 +212,12 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
             # If we don't have a solution or if we have a better solution than the currently best one
             if best_path == None or best_dist == None or path_copy[1] < shortest_dist: #len(path[0]) < len(best_path):
                 
-#                start recursion from the node we are currently on
-#	            start = child_node.dest
-#	            best_path, best_dist, max_dist_outdoors = path[0], path[1], path[2]
-#                new_dist = path[1]
+                # start to recursively find paths
                 new_path = get_best_path(digraph, child_node.dest, end, path_copy, max_dist_outdoors, 
 	                                             shortest_dist, best_path, toPrint = True)
 
                 if new_path != None:
-                    # need to find the shortest path and also least distance
-#                    if best_dist == None or new_dist < best_dist:
-#                        best_dist = new_dist
-                    
+                    # need to find the shortest path and also least distance  
                     best_path = new_path
                     
             elif toPrint:
@@ -371,5 +366,5 @@ class Ps2Test(unittest.TestCase):
         self._test_impossible_path('10', '32', total_dist=100)
 
 
-#if __name__ == "__main__":
-#    unittest.main()
+if __name__ == "__main__":
+    unittest.main()
