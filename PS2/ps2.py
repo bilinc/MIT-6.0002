@@ -201,7 +201,7 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
             
             # if the outdoor contstraint is broken, return None path
             if path_copy[2] > max_dist_outdoors:
-                return None
+                break
             
             # if a path is longer than the shortest path found so far, then you don't have to go further
             if shortest_dist != None and path_copy[1] > shortest_dist:
@@ -226,21 +226,23 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
     return tuple(best_path)
 
 
-
-print("---------Problem 3b: Implement get_best_path---------")
-print("Test 1")
-def shortest_path(graph, start, end, toPrint = False):
-    return get_best_path(graph, start, end, [[], 0, 0], 3, None, None, toPrint)
-
-def test_sp(graph, source, destination):
-    sp = shortest_path(graph, graph.get_node(source), graph.get_node(destination), toPrint = True)
-    
-    if sp != None:
-        print('Shortest path from', source, 'to', destination, 'is', printPath(sp))
-    else:
-        print('There is no path from', source, 'to', destination)
-        
-test_sp(test_map, 'a', 'c')
+# CTRL+4, or +5
+# =============================================================================
+# print("---------Problem 3b: Implement get_best_path---------")
+# print("Test 1")
+# def shortest_path(graph, start, end, toPrint = False):
+#     return get_best_path(graph, start, end, [[], 0, 0], 3, None, None, toPrint)
+# 
+# def test_sp(graph, source, destination):
+#     sp = shortest_path(graph, graph.get_node(source), graph.get_node(destination), toPrint = True)
+#     
+#     if sp != None:
+#         print('Shortest path from', source, 'to', destination, 'is', printPath(sp))
+#     else:
+#         print('There is no path from', source, 'to', destination)
+#         
+# test_sp(test_map, 'a', 'c')
+# =============================================================================
 
 
 
@@ -336,32 +338,37 @@ class Ps2Test(unittest.TestCase):
         self._print_path_description(start, end, total_dist, outdoor_dist)
         with self.assertRaises(ValueError):
             directed_dfs(self.graph, start, end, total_dist, outdoor_dist)
-#
+
 #    def test_path_one_step(self):
 #        self._test_path(expectedPath=['32', '56'])
 #
 #    def test_path_no_outdoors(self):
 #        self._test_path(
 #            expectedPath=['32', '36', '26', '16', '56'], outdoor_dist=0)
-#
-#    def test_path_multi_step(self):
-#        self._test_path(expectedPath=['2', '3', '7', '9'])
-#
+
+# Failed
+    def test_path_multi_step(self):
+        self._test_path(expectedPath=['2', '3', '7', '9'])
+
+# Failed
 #    def test_path_multi_step_no_outdoors(self):
 #        self._test_path(
 #            expectedPath=['2', '4', '10', '13', '9'], outdoor_dist=0)
-#
+
 #    def test_path_multi_step2(self):
 #        self._test_path(expectedPath=['1', '4', '12', '32'])
-#
+
+# Failed
 #    def test_path_multi_step_no_outdoors2(self):
 #        self._test_path(
 #            expectedPath=['1', '3', '10', '4', '12', '24', '34', '36', '32'],
 #            outdoor_dist=0)
-#
+
+# Failed
 #    def test_impossible_path1(self):
 #        self._test_impossible_path('8', '50', outdoor_dist=0)
-#
+
+# Failed
 #    def test_impossible_path2(self):
 #        self._test_impossible_path('10', '32', total_dist=100)
 
