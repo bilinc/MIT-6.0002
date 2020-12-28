@@ -192,8 +192,8 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
     # does not reset distance, does not check for shortest distance
     for child_node in digraph.get_edges_for_node(start): # list containing WeightedEdge objects
         
-        print('Child node: ', child_node)
-        print('Source: ', child_node.src, 'Destination: ', child_node.dest)
+#        print('Child node: ', child_node)
+#        print('Source: ', child_node.src, 'Destination: ', child_node.dest)
         
         if child_node.dest not in path_copy[0]:  # avoid cycles
             path_copy[1] = path[1] + int(child_node.get_total_distance())
@@ -336,34 +336,34 @@ class Ps2Test(unittest.TestCase):
         self._print_path_description(start, end, total_dist, outdoor_dist)
         with self.assertRaises(ValueError):
             directed_dfs(self.graph, start, end, total_dist, outdoor_dist)
-
-    def test_path_one_step(self):
-        self._test_path(expectedPath=['32', '56'])
-
-    def test_path_no_outdoors(self):
-        self._test_path(
-            expectedPath=['32', '36', '26', '16', '56'], outdoor_dist=0)
-
-    def test_path_multi_step(self):
-        self._test_path(expectedPath=['2', '3', '7', '9'])
-
-    def test_path_multi_step_no_outdoors(self):
-        self._test_path(
-            expectedPath=['2', '4', '10', '13', '9'], outdoor_dist=0)
-
-    def test_path_multi_step2(self):
-        self._test_path(expectedPath=['1', '4', '12', '32'])
-
-    def test_path_multi_step_no_outdoors2(self):
-        self._test_path(
-            expectedPath=['1', '3', '10', '4', '12', '24', '34', '36', '32'],
-            outdoor_dist=0)
-
-    def test_impossible_path1(self):
-        self._test_impossible_path('8', '50', outdoor_dist=0)
-
-    def test_impossible_path2(self):
-        self._test_impossible_path('10', '32', total_dist=100)
+#
+#    def test_path_one_step(self):
+#        self._test_path(expectedPath=['32', '56'])
+#
+#    def test_path_no_outdoors(self):
+#        self._test_path(
+#            expectedPath=['32', '36', '26', '16', '56'], outdoor_dist=0)
+#
+#    def test_path_multi_step(self):
+#        self._test_path(expectedPath=['2', '3', '7', '9'])
+#
+#    def test_path_multi_step_no_outdoors(self):
+#        self._test_path(
+#            expectedPath=['2', '4', '10', '13', '9'], outdoor_dist=0)
+#
+#    def test_path_multi_step2(self):
+#        self._test_path(expectedPath=['1', '4', '12', '32'])
+#
+#    def test_path_multi_step_no_outdoors2(self):
+#        self._test_path(
+#            expectedPath=['1', '3', '10', '4', '12', '24', '34', '36', '32'],
+#            outdoor_dist=0)
+#
+#    def test_impossible_path1(self):
+#        self._test_impossible_path('8', '50', outdoor_dist=0)
+#
+#    def test_impossible_path2(self):
+#        self._test_impossible_path('10', '32', total_dist=100)
 
 
 if __name__ == "__main__":
