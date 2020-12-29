@@ -8,7 +8,7 @@
 # Finding shortest paths through MIT buildings
 #
 import unittest
-from graph import Digraph, Node, WeightedEdge
+from graph import Digraph, WeightedEdge
 
 #
 # Problem 2: Building up the Campus Map
@@ -19,8 +19,8 @@ from graph import Digraph, Node, WeightedEdge
 # do the graph's edges represent? Where are the distances
 # represented?
 #
-# Answer: The nodes represent the buildings and locations. The edges are the roads connecting the buildings and the distances is
-# represented by the weight or cost.
+# Answer: The nodes represent the buildings and locations. The edges are the roads connecting the buildings and the
+# distances is represented by the weight or cost.
 #
 
 
@@ -67,7 +67,7 @@ def load_map(map_filename):
         except ValueError:
             # value error will be raised if the node already exists, so just do
             pass
-            
+
 
         # created the weighted edge
         w_edge = WeightedEdge(values[0], values[1], values[2], values[3])
@@ -76,7 +76,6 @@ def load_map(map_filename):
         mit_digraph.add_edge(w_edge)
     
     return mit_digraph
-
 
 
 # Problem 2c: Testing load_map
@@ -144,7 +143,8 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
         best_path: list of strings
             The shortest path found so far between the original start
             and end node.
-
+        toPrint: boolean
+            Used to tell the method if we want the paths printed out. Default set to False.
     Returns:
         A tuple with the shortest-path from start to end, represented by
         a list of building numbers (in strings), [n_1, n_2, ..., n_k],
@@ -165,7 +165,7 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
 #    path[1]        total distance traveled so far
 #    path[2]        total distance ourdoors so far
     
-    
+
     path_copy[0] = path_copy[0] + [start]
     
     if toPrint:
@@ -201,7 +201,7 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
             
             # if the outdoor contstraint is broken, return None path
             if path_copy[2] > max_dist_outdoors:
-                break
+                continue
             
             # if a path is longer than the shortest path found so far, then you don't have to go further
             if shortest_dist != None and path_copy[1] > shortest_dist:
@@ -283,7 +283,9 @@ def directed_dfs(digraph, start, end, max_total_dist, max_dist_outdoors):
     else:
         return list(shortest_path)
     
+answer = directed_dfs(load_map("test_load_map.txt"), 'a','c', 12, 3)
 
+print()
 # ================================================================
 # Begin tests -- you do not need to modify anything below this line
 # ================================================================
@@ -373,5 +375,5 @@ class Ps2Test(unittest.TestCase):
 #        self._test_impossible_path('10', '32', total_dist=100)
 
 
-if __name__ == "__main__":
-    unittest.main()
+# if __name__ == "__main__":
+#     unittest.main()
