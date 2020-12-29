@@ -25,7 +25,8 @@ class Edge(object):
         return self.dest
     def __str__(self):
         return self.src.getName() + '->' + self.dest.getName()
-               
+
+
 class Digraph(object):
     """edges is a dict mapping each node to a list of
     its children"""
