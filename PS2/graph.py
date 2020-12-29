@@ -1,7 +1,7 @@
 # 6.0002 Problem Set 5
 # Graph optimization
-# Name:
-# Collaborators:
+# Name: Bilin Chen
+# Collaborators: None
 # Time:
 
 import unittest
@@ -9,6 +9,7 @@ import unittest
 #
 # A set of data structures to represent graphs
 #
+
 
 class Node(object):
     """Represents a node in the graph"""
@@ -75,14 +76,6 @@ class Digraph(object):
     def __init__(self):
         self.nodes = set([])
         self.edges = {}  # must be a dict of Node -> list of edges
-        
-    # def __str__(self):
-    #     edge_strs = []
-    #     for edges in self.edges.values():
-    #         for edge in edges:
-    #             edge_strs.append(str(edge))
-    #     edge_strs = sorted(edge_strs)  # sort alphabetically
-    #     return '\n'.join(edge_strs)  # concat edge_strs with "\n"s between them
 
     def get_edges_for_node(self, node):
         return self.edges[node]
@@ -94,10 +87,10 @@ class Digraph(object):
         """Adds a Node object to the Digraph. Raises a ValueError if it is
         already in the graph."""
         if node in self.nodes:
-        	raise ValueError("Node already in graph.")
+            raise ValueError("Node already in graph.")
         else:
-        	self.nodes.add(node)
-        	self.edges[node] = []
+            self.nodes.add(node)
+            self.edges[node] = []
 
     def add_edge(self, edge):
         """Adds an Edge or WeightedEdge instance to the Digraph. Raises a
@@ -108,7 +101,7 @@ class Digraph(object):
         dst = self.edge.get_destination()
 
         if not (src in self.nodes and dst in self.nodes):
-        	raise ValueError("Nodes not in graph.")
+            raise ValueError("Nodes not in graph.")
 
         self.edges[src].append(self.edge)
     
@@ -119,20 +112,18 @@ class Digraph(object):
         raise NameError(name)
         
     def __str__(self):
-    	result = ''
-    	# for src in self.nodes:
-    	# 	for e in self.edges[src]:
-    	# 		result += result + str(e) + '\n'
-    	# print(self.edges)
-    	for src in self.edges:
-    		# print(src)
-    		for w_edge in self.edges[src]:
-    			# print(w_edge)
-    			result += str(w_edge) + '\n'
+        result = ''
+        # for src in self.nodes:
+        # 	for e in self.edges[src]:
+        # 		result += result + str(e) + '\n'
+        # print(self.edges)
+        for src in self.edges:
+            # print(src)
+            for w_edge in self.edges[src]:
+                # print(w_edge)
+                result += str(w_edge) + '\n'
 
-    	return result[:-1]
-
-        
+        return result[:-1]
 
 
 # ================================================================
