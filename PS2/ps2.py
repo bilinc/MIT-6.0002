@@ -118,8 +118,11 @@ def printPath(path):
             result = result + '->'
     return result
 
-global shortest_dist
+
 # Problem 3b: Implement get_best_path
+
+global shortest_dist
+
 def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
                   best_path, toPrint = False):
     """
@@ -283,9 +286,9 @@ def directed_dfs(digraph, start, end, max_total_dist, max_dist_outdoors):
         max_dist_outdoors constraints, then raises a ValueError.
     """
     # TODO
-    # input()
+    
     shortest_path = get_best_path(digraph, start, end, [[], 0, 0], max_dist_outdoors, None, None, toPrint=True)
-    # input()
+    
     if shortest_path == None:
 
         raise ValueError("No shortest path found following the constraints")
