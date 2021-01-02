@@ -184,9 +184,9 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
 
         return tuple(path_copy[0])
     # else:
-    #       for all the child nodes of start
-    #           construct a path including that node
-    #           recursively solve the rest of the path, from the child node to the end node
+    # for all the child nodes of start
+    	# construct a path including that node
+   		# recursively solve the rest of the path, from the child node to the end node
     
     # loop over all edges I can reach
     
