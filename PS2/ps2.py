@@ -204,17 +204,23 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
         print('Source:', child_node.src + ',', 'Destination:', child_node.dest)
 
         if child_node.dest not in path_copy[0]:  # avoid cycles
+            # first make a check if the next node will break the outdoor constraint
+            # if the outdoor constraint is broken, jump to next edge
+            if path[2] + int(child_node.get_outdoor_distance()) > max_dist_outdoors:
+                continue
+            # ------
+            # What do we do if the outdoor distance constraint is broken?
+            # ------
+
+            # optimality checks - don't want to traverse a path if it's worse than the currently found one
+            # if a path is longer than the shortest path found so far, then you don't have to go further
+            if shortest_dist != None and (path[1] + int(child_node.get_total_distance())) > shortest_dist:
+                continue
+
+            # if the constraint is okay, we add it to the temporary path
             path_copy[1] = path[1] + int(child_node.get_total_distance())
             path_copy[2] = path[2] + int(child_node.get_outdoor_distance())
 
-            # if the outdoor constraint is broken, jump to next edge
-            if path_copy[2] > max_dist_outdoors:
-                continue
-        #
-        #     # if a path is longer than the shortest path found so far, then you don't have to go further
-        #     if shortest_dist != None and path_copy[1] > shortest_dist:
-        #         continue
-        #
         #     # Not checking the most optimal travelled distance correctly
         #
         #     # If we don't have a solution or if we have a better solution than the currently best one
@@ -363,7 +369,7 @@ class Ps2Test(unittest.TestCase):
 
 # Failed
     def test_path_multi_step(self):
-        self._test_path(expectedPath=['2', '14'])  # (2,3,7,9)
+        self._test_path(expectedPath=['2', '14'], outdoor_dist=20)  # (2,3,7,9)
 
 # Failed
 #    def test_path_multi_step_no_outdoors(self):
