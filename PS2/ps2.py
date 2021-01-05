@@ -181,6 +181,9 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
     elif start == end:
         if shortest_dist == None or path_copy[1] < shortest_dist:
             shortest_dist = path_copy[1]
+            # input()
+
+        # The final optimal path is not returned correctly. Perhaps should store all solution paths in a list?
 
         return tuple(path_copy[0])
     # else:
@@ -235,9 +238,12 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
             # If we don't have a solution or if we have a better solution than the currently best one
             if best_path == None or best_dist == None or path_copy[1] < shortest_dist: #len(path[0]) < len(best_path):
 
+                # The shortest distance traveled so far needs to be recorded somehow
+                shortest_dist = path_copy[1]
+
                 # start to recursively find paths
                 new_path = get_best_path(digraph, child_node.dest, end, path_copy, max_dist_outdoors,
-	                                             shortest_dist, best_path, toPrint = True)
+                                         shortest_dist, best_path, toPrint = True)
 
                 if new_path != None:
                     # need to find the shortest path and also least distance
@@ -248,7 +254,7 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
             continue
     
 
-    return tuple() # tuple(best_path)
+    return tuple(best_path)
 
 
 # CTRL+4, or +5
