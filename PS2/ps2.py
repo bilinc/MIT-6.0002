@@ -121,8 +121,6 @@ def printPath(path):
 
 # Problem 3b: Implement get_best_path
 
-global shortest_dist
-
 def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
                   best_path, toPrint = False):
     """
@@ -158,10 +156,10 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
     """
 
     # Creating global variable to keep track of the best distance over all local frames
-
+    global shortest_dist
     shortest_dist = best_dist
 
-    path_copy = path.copy()    
+    path_copy = path.copy()
 
 #    path[0]        the current path of nodes being traversed
 #    path[1]        total distance traveled so far
@@ -169,7 +167,12 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
     
 
     path_copy[0] = path_copy[0] + [start]
-    
+
+    # if len(path_copy[0]) > 1:
+    #     node_dist = digraph.get_node(path_copy[0][-1]).get_total_distance()
+    #     path_copy[1] += int(node_dist)
+        # path_copy[2] += int(path_copy[0][-1].get_outdoor_distance())
+
     if toPrint:
         print('Current DFS path:', printPath(path_copy[0]))
     
@@ -222,7 +225,8 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
 
             # optimality checks - don't want to traverse a path if it's worse than the currently found one
             # if a path is longer than the shortest path found so far, then you don't have to go further
-            if shortest_dist != None and (path[1] + int(child_node.get_total_distance())) > shortest_dist:
+            distance = int(child_node.get_total_distance())
+            if shortest_dist != None and best_path != None and (path[1] + distance) > shortest_dist:
                 print('~~~~~~~~~~')
                 print('Current path is longer than the shortest path found so far.')
                 print('Current:', path_copy, 'Shortest so far:', best_path)
@@ -230,8 +234,9 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
                 continue
 
             # if the constraint is okay, we add it to the temporary path
-            path_copy[1] = path[1] + int(child_node.get_total_distance())
-            path_copy[2] = path[2] + int(child_node.get_outdoor_distance())
+            if len(path_copy[0]) > 1:
+                path_copy[1] = path[1] + int(child_node.get_total_distance())
+                path_copy[2] = path[2] + int(child_node.get_outdoor_distance())
 
         #     # Not checking the most optimal travelled distance correctly
         #
