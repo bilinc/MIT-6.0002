@@ -166,7 +166,7 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
 #    path[2]        total distance ourdoors so far
     
 
-    path_copy[0] = path_copy[0] + [start]
+
 
     # if len(path_copy[0]) > 1:
     #     node_dist = digraph.get_node(path_copy[0][-1]).get_total_distance()
@@ -210,6 +210,7 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
         print('Source:', child_node.src + ',', 'Destination:', child_node.dest)
 
         if child_node.dest not in path_copy[0]:  # avoid cycles
+            path_copy[0] = path_copy[0] + [start]
             # first make a check if the next node will break the outdoor constraint
             # if the outdoor constraint is broken, jump to next edge
             if path[2] + int(child_node.get_outdoor_distance()) > max_dist_outdoors:
@@ -234,6 +235,7 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
                 continue
 
             # if the constraint is okay, we add it to the temporary path
+            # How to only add the traveled distance on nodes you have actually visited and not pre-add them???
             if len(path_copy[0]) > 1:
                 path_copy[1] = path[1] + int(child_node.get_total_distance())
                 path_copy[2] = path[2] + int(child_node.get_outdoor_distance())
