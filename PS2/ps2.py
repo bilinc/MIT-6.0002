@@ -68,7 +68,6 @@ def load_map(map_filename):
             # value error will be raised if the node already exists, so just do
             pass
 
-
         # created the weighted edge
         w_edge = WeightedEdge(values[0], values[1], values[2], values[3])
 
@@ -122,7 +121,7 @@ def printPath(path):
 # Problem 3b: Implement get_best_path
 
 def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
-                  best_path, toPrint = False):
+                  best_path, toPrint=False):
     """
     Finds the shortest path between buildings subject to constraints.
 
@@ -159,19 +158,14 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
     global shortest_dist
     shortest_dist = best_dist
 
+
     path_copy = path.copy()
+
+    path_copy[0] = path_copy[0] + [start]
 
 #    path[0]        the current path of nodes being traversed
 #    path[1]        total distance traveled so far
 #    path[2]        total distance ourdoors so far
-    
-
-
-
-    # if len(path_copy[0]) > 1:
-    #     node_dist = digraph.get_node(path_copy[0][-1]).get_total_distance()
-    #     path_copy[1] += int(node_dist)
-        # path_copy[2] += int(path_copy[0][-1].get_outdoor_distance())
 
     if toPrint:
         print('Current DFS path:', printPath(path_copy[0]))
@@ -182,42 +176,42 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
         raise ValueError("Nodes does not exist in the graph!")
     
     elif start == end:
-        if shortest_dist == None or path_copy[1] < shortest_dist:
-            shortest_dist = path_copy[1]
-            # input()
+        # if shortest_dist is None or path_copy[1] < shortest_dist:
+        shortest_dist = path_copy[1]
 
         # The final optimal path is not returned correctly. Perhaps should store all solution paths in a list?
-
         return tuple(path_copy[0])
     # else:
     # for all the child nodes of start
-    	# construct a path including that node
-   		# recursively solve the rest of the path, from the child node to the end node
+    # construct a path including that node
+    # recursively solve the rest of the path, from the child node to the end node
     
     # loop over all edges I can reach
     
     # Problem: does not reset properly after going up
     # does not reset distance, does not check for shortest distance
-    all_children = [c.dest for c in digraph.get_edges_for_node(start)]
+    all_destinations = [c.dest for c in digraph.get_edges_for_node(start)]
+    all_edges = digraph.get_edges_for_node(start)
     print()
-    print(all_children)
+    print(all_destinations)
+    print(all_edges)
 
-    for child_node in digraph.get_edges_for_node(start): # list containing WeightedEdge objects
+    for i, edge in enumerate(digraph.get_edges_for_node(start)): # list containing WeightedEdge objects
 
         # # input()
         print('----------')
-        print('Edge for node:', start, '|', 'Current edge:', child_node)
-        print('Source:', child_node.src + ',', 'Destination:', child_node.dest)
+        print('Edge for node:', start, '|', 'Current edge:', edge)
+        print('Source:', edge.src + ',', 'Destination:', edge.dest)
 
-        if child_node.dest not in path_copy[0]:  # avoid cycles
-            path_copy[0] = path_copy[0] + [start]
+        if edge.dest not in path_copy[0]:  # avoid cycles
+
             # first make a check if the next node will break the outdoor constraint
             # if the outdoor constraint is broken, jump to next edge
-            if path[2] + int(child_node.get_outdoor_distance()) > max_dist_outdoors:
+            if path[2] + int(edge.get_outdoor_distance()) > max_dist_outdoors:
                 print('~~~~~~~~~~')
                 print('Traversing the current path will exceed the maximum outdoor limit.')
                 print('Current path:', path[0])
-                print('Node breaking constraints:', child_node.dest)
+                print('Node breaking constraints:', edge.dest)
                 print('~~~~~~~~~~')
                 continue
             # ------
@@ -226,40 +220,40 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
 
             # optimality checks - don't want to traverse a path if it's worse than the currently found one
             # if a path is longer than the shortest path found so far, then you don't have to go further
-            distance = int(child_node.get_total_distance())
-            if shortest_dist != None and best_path != None and (path[1] + distance) > shortest_dist:
+            distance = int(edge.get_total_distance())
+            if shortest_dist is not None and best_path is not None and (path[1] + distance) > shortest_dist:
                 print('~~~~~~~~~~')
                 print('Current path is longer than the shortest path found so far.')
                 print('Current:', path_copy, 'Shortest so far:', best_path)
                 print('~~~~~~~~~~')
                 continue
 
+
             # if the constraint is okay, we add it to the temporary path
             # How to only add the traveled distance on nodes you have actually visited and not pre-add them???
-            if len(path_copy[0]) > 1:
-                path_copy[1] = path[1] + int(child_node.get_total_distance())
-                path_copy[2] = path[2] + int(child_node.get_outdoor_distance())
+            if i != 0:
+                path_copy[1] = path[1] + int(all_edges[i-1].get_total_distance())
+                path_copy[2] = path[2] + int(all_edges[i-1].get_outdoor_distance())
 
-        #     # Not checking the most optimal travelled distance correctly
-        #
+            #     # Not checking the most optimal travelled distance correctly
+            #
             # If we don't have a solution or if we have a better solution than the currently best one
-            if best_path == None or best_dist == None or path_copy[1] < shortest_dist: #len(path[0]) < len(best_path):
+            if best_path is None or best_dist is None or path_copy[1] < shortest_dist: # len(path[0]) < len(best_path):
 
                 # The shortest distance traveled so far needs to be recorded somehow
                 shortest_dist = path_copy[1]
 
                 # start to recursively find paths
-                new_path = get_best_path(digraph, child_node.dest, end, path_copy, max_dist_outdoors,
-                                         shortest_dist, best_path, toPrint = True)
+                new_path = get_best_path(digraph, edge.dest, end, path_copy, max_dist_outdoors,
+                                         shortest_dist, best_path, toPrint=True)
 
-                if new_path != None:
+                if new_path is not None:
                     # need to find the shortest path and also least distance
                     best_path = new_path
 
         elif toPrint:
-            print('Already visited', child_node.dest)
+            print('Already visited', edge.dest)
             continue
-    
 
     return tuple(best_path)
 
@@ -281,7 +275,6 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
 #         
 # test_sp(test_map, 'a', 'c')
 # =============================================================================
-
 
 
 # Problem 3c: Implement directed_dfs
@@ -330,6 +323,7 @@ def directed_dfs(digraph, start, end, max_total_dist, max_dist_outdoors):
 # ================================================================
 # Begin tests -- you do not need to modify anything below this line
 # ================================================================
+
 
 class Ps2Test(unittest.TestCase):
     LARGE_DIST = 99999
@@ -382,16 +376,19 @@ class Ps2Test(unittest.TestCase):
         with self.assertRaises(ValueError):
             directed_dfs(self.graph, start, end, total_dist, outdoor_dist)
 
-    def test_path_one_step(self):
-        self._test_path(expectedPath=['32', '56'])
+# Passed 2021-01-07
+#     def test_path_one_step(self):
+#         self._test_path(expectedPath=['32', '56'])
 
-#    def test_path_no_outdoors(self):
-#        self._test_path(
-#            expectedPath=['32', '36', '26', '16', '56'], outdoor_dist=0)
+# Passed 2021-01-07
+#     def test_path_no_outdoors(self):
+#         self._test_path(expectedPath=['32', '36', '26', '16', '56'], outdoor_dist=0)
+
 
 # Failed
-#     def test_path_multi_step(self):
-#         self._test_path(expectedPath=['2', '14'], outdoor_dist=20)  # (2,3,7,9)
+    def test_path_multi_step(self):
+        self._test_path(expectedPath=['2', '14'])  # (2,3,7,9)
+
 
 # Failed
 #    def test_path_multi_step_no_outdoors(self):
