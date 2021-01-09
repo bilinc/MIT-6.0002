@@ -394,26 +394,26 @@ class Ps2Test(unittest.TestCase):
             directed_dfs(self.graph, start, end, total_dist, outdoor_dist)
 
 # Passed 2021-01-08
-    def test_path_one_step(self):
-        self._test_path(expectedPath=['32', '56'])
+#     def test_path_one_step(self):
+#         self._test_path(expectedPath=['32', '56'])
 
 # Passed 2021-01-08
-    def test_path_no_outdoors(self):
-        self._test_path(expectedPath=['32', '36', '26', '16', '56'], outdoor_dist=0)
+#     def test_path_no_outdoors(self):
+#         self._test_path(expectedPath=['32', '36', '26', '16', '56'], outdoor_dist=0)
 
 
-# Failed
+# Passed 2021-01-09
 #     def test_path_multi_step(self):
 #         self._test_path(expectedPath=['2','3','7','9'])  # ('2','3','7','9')
-#
 
-# Failed
-#    def test_path_multi_step_no_outdoors(self):
-#        self._test_path(
-#            expectedPath=['2', '4', '10', '13', '9'], outdoor_dist=0)
 
-#    def test_path_multi_step2(self):
-#        self._test_path(expectedPath=['1', '4', '12', '32'])
+# Passed 2021-01-09
+#     def test_path_multi_step_no_outdoors(self):
+#         self._test_path(expectedPath=['2', '4', '10', '13', '9'], outdoor_dist=0)
+
+# Passed 2021-01-09
+    def test_path_multi_step2(self):
+        self._test_path(expectedPath=['1', '4', '12', '32'])
 
 # Failed
 #    def test_path_multi_step_no_outdoors2(self):
