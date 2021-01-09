@@ -120,7 +120,7 @@ def printPath(path):
 
 # Problem 3b: Implement get_best_path
 
-def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
+def get_best_path(digraph, start, end, path, max_total_dist, max_dist_outdoors, best_dist,
                   best_path, toPrint=False):
     """
     Finds the shortest path between buildings subject to constraints.
@@ -209,10 +209,18 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
 
             # first make a check if the next node will break the outdoor constraint
             # if the outdoor constraint is broken, jump to next edge
+            if path[1] + int(edge.get_total_distance()) > max_total_dist:
+                print('~~~~~~~~~~')
+                print('Exceeding the maximum total distance limit.')
+                print('Current path:', path[0], 'limit:', max_total_dist, 'distance:', path[1] + int(edge.get_total_distance()))
+                print('Node breaking constraints:', edge.dest)
+                print('~~~~~~~~~~')
+                continue
+
             if path[2] + int(edge.get_outdoor_distance()) > max_dist_outdoors:
                 print('~~~~~~~~~~')
-                print('Traversing the current path will exceed the maximum outdoor limit.')
-                print('Current path:', path[0])
+                print('Exceeding the maximum outdoor distance limit.')
+                print('Current path:', path[0], 'limit:', max_dist_outdoors, 'distance:', path[2] + int(edge.get_outdoor_distance()))
                 print('Node breaking constraints:', edge.dest)
                 print('~~~~~~~~~~')
                 continue
@@ -250,7 +258,7 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
                 # The shortest distance traveled so far needs to be recorded somehow
 
                 # start to recursively find paths
-                new_path = get_best_path(digraph, edge.dest, end, path_copy, max_dist_outdoors,
+                new_path = get_best_path(digraph, edge.dest, end, path_copy, max_total_dist, max_dist_outdoors,
                                          shortest_dist, best_path, toPrint=True)
 
                 if new_path is not None:
@@ -325,7 +333,7 @@ def directed_dfs(digraph, start, end, max_total_dist, max_dist_outdoors):
     """
     # TODO
     
-    shortest_path = get_best_path(digraph, start, end, [[], 0, 0], max_dist_outdoors, None, None, toPrint=True)
+    shortest_path = get_best_path(digraph, start, end, [[], 0, 0], max_total_dist, max_dist_outdoors, None, None, toPrint=True)
     
     if shortest_path == None:
 
@@ -394,38 +402,32 @@ class Ps2Test(unittest.TestCase):
             directed_dfs(self.graph, start, end, total_dist, outdoor_dist)
 
 # Passed 2021-01-08
-#     def test_path_one_step(self):
-#         self._test_path(expectedPath=['32', '56'])
+    def test_path_one_step(self):
+        self._test_path(expectedPath=['32', '56'])
 
 # Passed 2021-01-08
-#     def test_path_no_outdoors(self):
-#         self._test_path(expectedPath=['32', '36', '26', '16', '56'], outdoor_dist=0)
+    def test_path_no_outdoors(self):
+        self._test_path(expectedPath=['32', '36', '26', '16', '56'], outdoor_dist=0)
 
 
 # Passed 2021-01-09
-#     def test_path_multi_step(self):
-#         self._test_path(expectedPath=['2','3','7','9'])  # ('2','3','7','9')
+    def test_path_multi_step(self):
+        self._test_path(expectedPath=['2','3','7','9'])  # ('2','3','7','9')
 
+    def test_path_multi_step_no_outdoors(self):
+        self._test_path(expectedPath=['2', '4', '10', '13', '9'], outdoor_dist=0)
 
-# Passed 2021-01-09
-#     def test_path_multi_step_no_outdoors(self):
-#         self._test_path(expectedPath=['2', '4', '10', '13', '9'], outdoor_dist=0)
+    def test_path_multi_step2(self):
+        self._test_path(expectedPath=['1', '4', '12', '32'])
 
-# Passed 2021-01-09
-#     def test_path_multi_step2(self):
-#         self._test_path(expectedPath=['1', '4', '12', '32'])
+    def test_path_multi_step_no_outdoors2(self):
+        self._test_path(
+            expectedPath=['1', '3', '10', '4', '12', '24', '34', '36', '32'],
+            outdoor_dist=0)
 
-# Passed 2021-01-09
-#     def test_path_multi_step_no_outdoors2(self):
-#         self._test_path(
-#             expectedPath=['1', '3', '10', '4', '12', '24', '34', '36', '32'],
-#             outdoor_dist=0)
+    def test_impossible_path1(self):
+       self._test_impossible_path('8', '50', outdoor_dist=0)
 
-# Passed 2021-01-09
-#     def test_impossible_path1(self):
-#        self._test_impossible_path('8', '50', outdoor_dist=0)
-
-# Failed
     def test_impossible_path2(self):
        self._test_impossible_path('10', '32', total_dist=100)
 
