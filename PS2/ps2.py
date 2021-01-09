@@ -412,22 +412,22 @@ class Ps2Test(unittest.TestCase):
 #         self._test_path(expectedPath=['2', '4', '10', '13', '9'], outdoor_dist=0)
 
 # Passed 2021-01-09
-    def test_path_multi_step2(self):
-        self._test_path(expectedPath=['1', '4', '12', '32'])
+#     def test_path_multi_step2(self):
+#         self._test_path(expectedPath=['1', '4', '12', '32'])
 
-# Failed
-#    def test_path_multi_step_no_outdoors2(self):
-#        self._test_path(
-#            expectedPath=['1', '3', '10', '4', '12', '24', '34', '36', '32'],
-#            outdoor_dist=0)
+# Passed 2021-01-09
+#     def test_path_multi_step_no_outdoors2(self):
+#         self._test_path(
+#             expectedPath=['1', '3', '10', '4', '12', '24', '34', '36', '32'],
+#             outdoor_dist=0)
 
-# Failed
-#    def test_impossible_path1(self):
+# Passed 2021-01-09
+#     def test_impossible_path1(self):
 #        self._test_impossible_path('8', '50', outdoor_dist=0)
 
 # Failed
-#    def test_impossible_path2(self):
-#        self._test_impossible_path('10', '32', total_dist=100)
+    def test_impossible_path2(self):
+       self._test_impossible_path('10', '32', total_dist=100)
 
 
 if __name__ == "__main__":
