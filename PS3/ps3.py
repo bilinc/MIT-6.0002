@@ -81,10 +81,14 @@ class RectangularRoom(object):
         height: an integer > 0
         dirt_amount: an integer >= 0
         """
-        self.width = width
-        self.height = height
-        self.dirt_amount = dirt_amount
-    
+
+        self.tiles = {}
+
+        for w in range(0, width + 1):
+            for h in range(0, height + 1):
+                self.tiles[(w, h)] = dirt_amount
+
+
     def clean_tile_at_position(self, pos, capacity):
         """
         Mark the tile under the position pos as cleaned by capacity amount of dirt.
@@ -98,7 +102,16 @@ class RectangularRoom(object):
         Note: The amount of dirt on each tile should be NON-NEGATIVE.
               If the capacity exceeds the amount of dirt on the tile, mark it as 0.
         """
-        raise NotImplementedError
+
+        self.tile_to_clean = (math.floor(pos.get_x()), math.floor(pos.get_y()))
+
+        if self.tiles[self.tile_to_clean] - capacity < 0:
+            self.tiles[self.tile_to_clean] = 0
+            # self.tiles[self.tile_to_clean] = int(self.tiles[self.tile_to_clean])
+        else:
+            self.tiles[self.tile_to_clean] = self.tiles[self.tile_to_clean] - capacity
+
+
 
     def is_tile_cleaned(self, m, n):
         """
@@ -114,7 +127,12 @@ class RectangularRoom(object):
         Note: The tile is considered clean only when the amount of dirt on this
               tile is 0.
         """
-        raise NotImplementedError
+        self.tile = (m, n)
+        if self.tiles[self.tile] == 0:
+            return True
+        else:
+            return False
+
 
     def get_num_cleaned_tiles(self):
         """

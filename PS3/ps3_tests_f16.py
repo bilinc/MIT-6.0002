@@ -180,7 +180,7 @@ class ps3_P1A(unittest.TestCase):
                 self.assertEquals(solution_room.is_position_in_room(pos),room.is_position_in_room(pos),
                                   "position {},{} is incorrect: expected {}, got {}".format(x, y, solution_room.is_position_in_room(pos), room.is_position_in_room(pos))
                                   )
-
+'''
 class ps3_P1B(unittest.TestCase):
     """test the Robot abstract base class"""
     def test_unimplemented_methods(self):
@@ -582,14 +582,15 @@ class ps3_P5_Faulty(SimulationTester):
         "Test cleaning 90% of a 10x10 room with FaultyRobot"
         x = ps3.run_simulation(5, 1.0, 3, 10, 10, 10, 0.9, 100, ps3.FaultyRobot)
         self.assertTrue(205 <= x <=225, "Simulation output was outside of 99.7% confidence interval! Took " + str(x) + " steps\n")
+'''
 
 if __name__ == "__main__":
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(ps3_P1A))
-    suite.addTest(unittest.makeSuite(ps3_P1B))
-    suite.addTest(unittest.makeSuite(ps3_P2_ER))
-    suite.addTest(unittest.makeSuite(ps3_P2_FR))
-    suite.addTest(unittest.makeSuite(ps3_P3))
-    suite.addTest(unittest.makeSuite(ps3_P5_Standard))
-    suite.addTest(unittest.makeSuite(ps3_P5_Faulty))
+    # suite.addTest(unittest.makeSuite(ps3_P1B))
+    # suite.addTest(unittest.makeSuite(ps3_P2_ER))
+    # suite.addTest(unittest.makeSuite(ps3_P2_FR))
+    # suite.addTest(unittest.makeSuite(ps3_P3))
+    # suite.addTest(unittest.makeSuite(ps3_P5_Standard))
+    # suite.addTest(unittest.makeSuite(ps3_P5_Faulty))
     unittest.TextTestRunner(verbosity=3).run(suite)
