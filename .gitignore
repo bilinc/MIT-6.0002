@@ -2,3 +2,5 @@
 *.pyo
 *.ini
 PS2/.idea
+.idea
+.spyproject
