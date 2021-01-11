@@ -156,13 +156,13 @@ class RectangularRoom(object):
         Returns: True if pos is in the room, False otherwise.
         """
 
+        # check if position is within room boundary
         if pos.get_x() < 0 or pos.get_x() >= self.width:
             return False
         elif pos.get_y() < 0 or pos.get_y() >= self.height:
             return False
         else:
             return True
-
         
     def get_dirt_amount(self, m, n):
         """
@@ -175,7 +175,7 @@ class RectangularRoom(object):
 
         Returns: an integer
         """
-        raise NotImplementedError
+        return self.tiles[(m, n)]
         
     def get_num_tiles(self):
         """
