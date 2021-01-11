@@ -19,6 +19,9 @@ class Position(object):
     """
     A Position represents a location in a two-dimensional room, where
     coordinates are given by floats (x, y).
+
+    0 <= x < width
+    0 <= y < height
     """
     def __init__(self, x, y):
         """
@@ -81,13 +84,20 @@ class RectangularRoom(object):
         height: an integer > 0
         dirt_amount: an integer >= 0
         """
+        self.width = width
+        self.height = height
+        self.dirt_amount = dirt_amount
 
         self.tiles = {}
 
-        for w in range(0, width + 1):
-            for h in range(0, height + 1):
-                self.tiles[(w, h)] = dirt_amount
+        # instantiating variables used in later methods
+        self.tile = tuple()
+        self.tile_to_clean = tuple()
 
+        # create tiles according to the room dimension and store it in a dict
+        for w in range(self.width):
+            for h in range(self.height):
+                self.tiles[(w, h)] = self.dirt_amount
 
     def clean_tile_at_position(self, pos, capacity):
         """
@@ -102,16 +112,14 @@ class RectangularRoom(object):
         Note: The amount of dirt on each tile should be NON-NEGATIVE.
               If the capacity exceeds the amount of dirt on the tile, mark it as 0.
         """
-
+        # which tile to clean is determined by the lowest integer boundary
         self.tile_to_clean = (math.floor(pos.get_x()), math.floor(pos.get_y()))
 
+        # no non-negative dirt on tiles
         if self.tiles[self.tile_to_clean] - capacity < 0:
             self.tiles[self.tile_to_clean] = 0
-            # self.tiles[self.tile_to_clean] = int(self.tiles[self.tile_to_clean])
         else:
             self.tiles[self.tile_to_clean] = self.tiles[self.tile_to_clean] - capacity
-
-
 
     def is_tile_cleaned(self, m, n):
         """
@@ -133,12 +141,12 @@ class RectangularRoom(object):
         else:
             return False
 
-
     def get_num_cleaned_tiles(self):
         """
         Returns: an integer; the total number of clean tiles in the room
         """
-        raise NotImplementedError
+        # create a list of all dictionary values (tile dirt amount) and return those who are equal to zero (clean tiles)
+        return list(self.tiles.values()).count(0)
         
     def is_position_in_room(self, pos):
         """
@@ -147,7 +155,14 @@ class RectangularRoom(object):
         pos: a Position object.
         Returns: True if pos is in the room, False otherwise.
         """
-        raise NotImplementedError
+
+        if pos.get_x() < 0 or pos.get_x() >= self.width:
+            return False
+        elif pos.get_y() < 0 or pos.get_y() >= self.height:
+            return False
+        else:
+            return True
+
         
     def get_dirt_amount(self, m, n):
         """
@@ -249,6 +264,7 @@ class Robot(object):
         """
         # do not change -- implement in subclasses
         raise NotImplementedError
+
 
 # === Problem 2
 class EmptyRoom(RectangularRoom):
