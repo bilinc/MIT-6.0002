@@ -215,10 +215,13 @@ class Robot(object):
 
         room:  a RectangularRoom object.
         speed: a float (speed > 0)
-        capacity: a positive interger; the amount of dirt cleaned by the robot 
+        capacity: a positive integer; the amount of dirt cleaned by the robot
                   in a single time-step
         """
-        raise NotImplementedError
+        self.room = room
+        self.speed = speed
+        self.capacity = capacity
+
 
     def get_robot_position(self):
         """
@@ -231,7 +234,7 @@ class Robot(object):
         Returns: a float d giving the direction of the robot as an angle in
         degrees, 0.0 <= d < 360.0.
         """
-        raise NotImplementedError
+        return random.random(0, 360)
 
     def set_robot_position(self, position):
         """
