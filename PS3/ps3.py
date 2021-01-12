@@ -91,7 +91,6 @@ class RectangularRoom(object):
         self.tiles = {}
 
         # instantiating variables used in later methods
-        self.tile = tuple()
         self.tile_to_clean = tuple()
 
         # create tiles according to the room dimension and store it in a dict
@@ -135,11 +134,7 @@ class RectangularRoom(object):
         Note: The tile is considered clean only when the amount of dirt on this
               tile is 0.
         """
-        self.tile = (m, n)
-        if self.tiles[self.tile] == 0:
-            return True
-        else:
-            return False
+        return self.tiles[(m, n)] == 0
 
     def get_num_cleaned_tiles(self):
         """
