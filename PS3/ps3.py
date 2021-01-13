@@ -223,18 +223,19 @@ class Robot(object):
         self.capacity = capacity
 
 
+
     def get_robot_position(self):
         """
         Returns: a Position object giving the robot's position in the room.
         """
-        raise NotImplementedError
+        return self.robot_position
 
     def get_robot_direction(self):
         """
         Returns: a float d giving the direction of the robot as an angle in
         degrees, 0.0 <= d < 360.0.
         """
-        return random.random(0, 360)
+        return self.robot_direction
 
     def set_robot_position(self, position):
         """
@@ -242,7 +243,7 @@ class Robot(object):
 
         position: a Position object.
         """
-        raise NotImplementedError
+        self.robot_position = position
 
     def set_robot_direction(self, direction):
         """
@@ -250,7 +251,7 @@ class Robot(object):
 
         direction: float representing an angle in degrees
         """
-        raise NotImplementedError
+        self.robot_direction = direction
 
     def update_position_and_clean(self):
         """
