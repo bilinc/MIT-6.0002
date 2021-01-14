@@ -6,10 +6,11 @@ import threading
 import traceback
 import unittest
 import random
-import imp
-
-test = imp.load_compiled("test", "test.pyc")
 import ps3
+
+import imp
+test = imp.load_compiled("test", "test.pyc")
+
 
 def xyrange(x_upper_bound, y_upper_bound):
     """ Returns the cartesian product of range(x_upper_bound) and range(y_upper_bound).
@@ -17,38 +18,39 @@ def xyrange(x_upper_bound, y_upper_bound):
     """
     for x in range(x_upper_bound):
         for y in range(y_upper_bound):
-            yield (x, y) # these are the room tile xy tuples 
+            yield (x, y)  # these are the room tile xy tuples
+
 
 class ps3_P1A(unittest.TestCase):
-    """test the RectangularRoom abstract base class"""    
+    """test the RectangularRoom abstract base class"""
     def test_unimplemented_methods(self):
         """Test if student implemented methods in RectangularRoom abstract class that should not be implemented"""
-        room = ps3.RectangularRoom(2,2,1)
+        room = ps3.RectangularRoom(2, 2, 1)
         self.assertRaises(NotImplementedError, room.get_num_tiles)
-        pos = test.Position(1,1)
+        pos = test.Position(1, 1)
         self.assertRaises(NotImplementedError, room.is_position_valid, pos)
         self.assertRaises(NotImplementedError, room.get_random_position)
 
     def test_room_dirt_dirty(self):
-        """ 
-        Can fail either because get_dirt_amount is working incorrectly 
+        """
+        Can fail either because get_dirt_amount is working incorrectly
         OR the student is initializing the dirt amount incorrectly
         """
-        width, height, dirt_amount = (3, 4, 1)   
+        width, height, dirt_amount = (3, 4, 1)
         room = ps3.RectangularRoom(width, height, dirt_amount)
-        for x, y in xyrange(width, height):            
+        for x, y in xyrange(width, height):
             self.assertEquals(room.get_dirt_amount(x, y),dirt_amount,
                              "Tile {} was not initialized with correct dirt amount".format((x, y))
                              )
-                             
+
     def test_room_dirt_clean(self):
-        """ 
-        Can fail either because get_dirt_amount is working incorrectly 
+        """
+        Can fail either because get_dirt_amount is working incorrectly
         OR the student is initializing the dirt amount incorrectly
         """
-        width, height, dirt_amount = (3, 4, 0)      
+        width, height, dirt_amount = (3, 4, 0)
         room = ps3.RectangularRoom(width, height, dirt_amount)
-        for x, y in xyrange(width, height):            
+        for x, y in xyrange(width, height):
             self.assertEquals(room.get_dirt_amount(x, y),dirt_amount,
                              "Tile {} was not initialized with correct dirt amount".format((x, y))
                              )
@@ -62,7 +64,7 @@ class ps3_P1A(unittest.TestCase):
             self.assertFalse(room.is_tile_cleaned(x, y),
                              "Unclean tile {} was returned as clean".format((x, y))
                              )
-    
+
     def test_is_tile_cleaned_clean(self):
         """ Test is_tile_cleaned"""
         width, height, dirt_amount = (3, 4, 0)
@@ -71,7 +73,7 @@ class ps3_P1A(unittest.TestCase):
         for x, y in xyrange(width, height):
             self.assertTrue(room.is_tile_cleaned(x, y),
                              "Unclean tile {} was returned as clean".format((x, y))
-                             )
+            )
 
     def test_clean_tile_at_position_PosToZero(self):
         """ Test if clean_tile_at_position removes all dirt"""
@@ -79,7 +81,7 @@ class ps3_P1A(unittest.TestCase):
         room = ps3.RectangularRoom(width, height, dirt_amount)
         # Clean the tiles and confirm they are marked as clean
         for x, y in xyrange(width, height):
-            room.clean_tile_at_position(test.Position(x + random.random(), y + random.random()), dirt_amount) 
+            room.clean_tile_at_position(test.Position(x + random.random(), y + random.random()), dirt_amount)
                 # using random.random in case there is any issue with specific parts of a tile
         for x, y in xyrange(width, height):
             self.assertTrue(room.is_tile_cleaned(x, y),
@@ -92,7 +94,7 @@ class ps3_P1A(unittest.TestCase):
         room = ps3.RectangularRoom(width, height, dirt_amount)
         # Clean the tiles and confirm they are marked as clean
         for x, y in xyrange(width, height):
-            room.clean_tile_at_position(test.Position(x + random.random(), y + random.random()), dirt_amount - 1) 
+            room.clean_tile_at_position(test.Position(x + random.random(), y + random.random()), dirt_amount - 1)
                 # using random.random in case there is any issue with specific parts of a tile
         for x, y in xyrange(width, height):
             self.assertFalse(room.is_tile_cleaned(x, y),
@@ -105,15 +107,15 @@ class ps3_P1A(unittest.TestCase):
         room = ps3.RectangularRoom(width, height, dirt_amount)
         # Clean the tiles and confirm they are marked as clean
         for x, y in xyrange(width, height):
-            room.clean_tile_at_position(test.Position(x + random.random(), y + random.random()), 1) 
+            room.clean_tile_at_position(test.Position(x + random.random(), y + random.random()), 1)
                 # using random.random in case there is any issue with specific parts of a tile
         for x, y in xyrange(width, height):
             self.assertTrue(room.is_tile_cleaned(x, y),
                             "Clean tile {} was marked clean, no negative dirt allowed".format((x, y))
                             )
-    
+
     def test_get_num_cleaned_tiles_FullIn1(self):
-        "Test get_num_cleaned_tiles for cleaning subset of room completely with 1 call"
+        """Test get_num_cleaned_tiles for cleaning subset of room completely with 1 call"""
         width, height, dirt_amount = (3, 4, 1)
         room = ps3.RectangularRoom(width, height, dirt_amount)
         cleaned_tiles = 0
@@ -127,7 +129,7 @@ class ps3_P1A(unittest.TestCase):
                             )
 
     def test_get_num_cleaned_tiles_Partial(self):
-        "Test get_num_cleaned_tiles for cleaning subset of room incompletely"
+        """Test get_num_cleaned_tiles for cleaning subset of room incompletely"""
         width, height, dirt_amount = (3, 4, 2)
         room = ps3.RectangularRoom(width, height, dirt_amount)
         cleaned_tiles = 0
@@ -158,7 +160,7 @@ class ps3_P1A(unittest.TestCase):
         "Test cleaning already clean tiles does not increment counter"
         width, height, dirt_amount = (3, 4, 2)
         room = ps3.RectangularRoom(width, height, dirt_amount)
-        # clean all of the tiles in the room        
+        # clean all of the tiles in the room
         for x, y in xyrange(width, height):
             room.clean_tile_at_position(test.Position(x + random.random(), y + random.random()), dirt_amount)
         for x, y in xyrange(width, height):
@@ -177,10 +179,11 @@ class ps3_P1A(unittest.TestCase):
         for x in [0.0, -0.1, width - 0.1, width, width + 0.1]:
             for y in [0.0, -0.1, height - 0.1, height, height + 0.1]:
                 pos = test.Position(x, y)
-                self.assertEquals(solution_room.is_position_in_room(pos),room.is_position_in_room(pos),
+                self.assertEquals(solution_room.is_position_in_room(pos), room.is_position_in_room(pos),
                                   "position {},{} is incorrect: expected {}, got {}".format(x, y, solution_room.is_position_in_room(pos), room.is_position_in_room(pos))
                                   )
-'''
+
+
 class ps3_P1B(unittest.TestCase):
     """test the Robot abstract base class"""
     def test_unimplemented_methods(self):
@@ -204,7 +207,8 @@ class ps3_P1B(unittest.TestCase):
             self.assertEquals(robot_dir, directions[dir_index],
                               "Robot direction set or retrieved incorrectly: expected {}, got {}".format(directions[dir_index], robot_dir)
                               )
-        
+
+
 class ps3_P2_ER(unittest.TestCase):
     """test the EmptyRoom subclass"""
     def test_get_random_position(self):
@@ -261,6 +265,7 @@ class ps3_P2_ER(unittest.TestCase):
                 self.assertEquals(solution_room.is_position_valid(pos), room.is_position_valid(pos),
                              "student code and solution code disagree on whether position is valid"
                                   )
+
 
 class ps3_P2_FR(unittest.TestCase):                  
     """tests the FurnishedRoom subclass """
@@ -345,7 +350,8 @@ class ps3_P2_FR(unittest.TestCase):
         for i in range(50000):
             pos = room.get_random_position()
             self.assertTrue(sol_room.is_position_valid(pos)) 
-    
+
+
 class ps3_P3(unittest.TestCase):
     """This  tests EmptyRoom and Standard robot in various ways"""
     def createRoomAndRobots(self, num_robots):
@@ -512,6 +518,7 @@ class SimulationTester(unittest.TestCase):
                 "Actual output: %r; acceptable intervals: %s"
                 % (parameters + (actual, intervals_str)))
 
+
 class ps3_P5_Standard(SimulationTester):
     """test the simulation time cleaning the EmptyRoom with a StandardRobot"""
     def testSimulation1(self):
@@ -521,75 +528,97 @@ class ps3_P5_Standard(SimulationTester):
         except:
             print ("Unexpected error:", sys.exc_info()[1])
             raise
+
     def testSimulation2(self):
         "Test cleaning 75% of a 10x10 room (Standard Robot)"
         self.run_simulation(((183, 198),), (1, 1.0, 1, 10, 10, 1, 0.75, 100, ps3.StandardRobot))
+
     def testSimulation3(self):
         "Test cleaning 90% of a 10x10 room (Standard Robot)"
         self.run_simulation(((298, 327),), (1, 1.0, 1, 10, 10, 1, 0.9, 100, ps3.StandardRobot))
+
     def testSimulation4(self):
         "Test multiple robots (95% of a 20x20 room with 5 robots (Standard Robot))"
         self.run_simulation(((289, 303),), (5, 1.0, 1, 20, 20, 1, 0.95, 100, ps3.StandardRobot))
+
     def testSimulation5(self):
         "Test different speeds (90% of a 5x20 room with a robot of speed 0.2 (Standard Robot))"
         self.run_simulation(((1095, 1228),), (1, 0.2, 1, 5, 20, 1, 0.9, 100, ps3.StandardRobot))
+
     def testSimulation6(self):
         "Test multiple robots and different speeds (90% of a 10x10 room with 3 robots of speed 0.5 (Standard Robot))"
         self.run_simulation(((155, 180),), (3, 0.5, 1, 10, 10, 1, 0.9, 100, ps3.StandardRobot))
+
     # new tests below here
     def testSimulation7(self):
          "Test cleaning 100% of a 5x5 room (Standard Robot, 5 dirt/tile, capcity = 3)"
          self.run_simulation(((206, 266),(180, 240)), (1, 1.0, 3, 5, 5, 5, 1.0, 100, ps3.StandardRobot))
+
     def testSimulation8(self):
         "Test cleaning 100% of a 5x5 room (Standard Robot, 6 dirt/tile, capacity = 3)"
         self.run_simulation(((206, 266),(180, 240)), (1, 1.0, 3, 5, 5, 6, 1.0, 100, ps3.StandardRobot))
+
     def testSimulation9(self):
         """Test different speeds (90% of a 3x10 room with a robot of speed 0.2 (Standard Robot)),
         capacity = 2, 6 dirt/tile"""
         self.run_simulation(((387, 447),(384, 444)), (1, 0.2, 2, 3, 10, 6, 0.9, 100, ps3.StandardRobot))
+
     def testSimulation10(self):
         "Test multiple robots (95% of a 10x10 room with 5 robots (Standard Robot)) capacity = 2, 6 dirt/tile"
         self.run_simulation(((137, 198),(130, 190)), (5, 1.0, 2, 10, 10, 6, 0.95, 100, ps3.StandardRobot))
+
     def testSimulation11(self):
         """Test multiple robots and different speeds (90% of a 5x5 room with 3 robots of speed 0.5
         (Standard Robot)), capacity = 2, 6 dirt/tile"""
         self.run_simulation(((48, 108), (45, 104)), (3, 0.5, 2, 5, 5, 6, 0.9, 100, ps3.StandardRobot))
 
+
 class ps3_P5_Faulty(SimulationTester):
     """test the simulation time cleaning the EmptyRoom with a FaultyRobot"""
     def testSimulation1(self):
-        "Test cleaning 100% of a 5x5 room with FaultyRobot"
+        """Test cleaning 100% of a 5x5 room with FaultyRobot"""
         x = ps3.run_simulation(1, 1.0, 1, 5, 5, 1, 1.0, 100, ps3.FaultyRobot)
         self.assertTrue(125 <= x <= 275,
                         "Simulation output was outside of 99.7% confidence interval!\n")    
+
     def testSimulation2(self):
-        "Test cleaning 75% of a 10x10 room with FaultyRobot"
+        """Test cleaning 75% of a 10x10 room with FaultyRobot"""
         x = ps3.run_simulation(1, 1.0, 1, 10, 10, 1, 0.75, 100, ps3.FaultyRobot)
-        self.assertTrue(210 <= x <=260, "Simulation output was outside of 99.7% confidence interval! Took " + str(x) + " steps\n")
+        self.assertTrue(210 <= x <= 260,
+                        "Simulation output was outside of 99.7% confidence interval! Took " + str(x) + " steps\n")
+
     def testSimulation3(self):
-        "Test cleaning 90% of a 10x10 room with FaultyRobot"
+        """Test cleaning 90% of a 10x10 room with FaultyRobot"""
         x = ps3.run_simulation(1, 1.0, 1, 10, 10, 1, 0.9, 100, ps3.FaultyRobot)
-        self.assertTrue(360 <= x <=415, "Simulation output was outside of 99.7% confidence interval! Took " + str(x) + " steps\n")
+        self.assertTrue(360 <= x <= 415,
+                        "Simulation output was outside of 99.7% confidence interval! Took " + str(x) + " steps\n")
+
     def testSimulation4(self):
-        "Test cleaning 100% of a 5x5 room with FaultyRobot"
+        """Test cleaning 100% of a 5x5 room with FaultyRobot"""
         x = ps3.run_simulation(2, 1.0, 2, 5, 5, 5, 1.0, 100, ps3.FaultyRobot)
-        self.assertTrue(160 <= x <=200, "Simulation output was outside of 99.7% confidence interval! Took " + str(x) + " steps\n")
+        self.assertTrue(160 <= x <= 200,
+                        "Simulation output was outside of 99.7% confidence interval! Took " + str(x) + " steps\n")
+
     def testSimulation5(self):
-        "Test cleaning 75% of a 10x10 room with FaultyRobot"
+        """Test cleaning 75% of a 10x10 room with FaultyRobot"""
         x = ps3.run_simulation(4, 1.0, 3, 10, 10, 5, 0.75, 100, ps3.FaultyRobot)
-        self.assertTrue(101 <= x <=116, "Simulation output was outside of 99.7% confidence interval! Took " + str(x) + " steps\n")
+        self.assertTrue(101 <= x <= 116,
+                        "Simulation output was outside of 99.7% confidence interval! Took " + str(x) + " steps\n")
+
     def testSimulation6(self):
-        "Test cleaning 90% of a 10x10 room with FaultyRobot"
+        """Test cleaning 90% of a 10x10 room with FaultyRobot"""
         x = ps3.run_simulation(5, 1.0, 3, 10, 10, 10, 0.9, 100, ps3.FaultyRobot)
-        self.assertTrue(205 <= x <=225, "Simulation output was outside of 99.7% confidence interval! Took " + str(x) + " steps\n")
-'''
+        self.assertTrue(205 <= x <= 225,
+                        "Simulation output was outside of 99.7% confidence interval! Took " + str(x) + " steps\n")
+
 
 if __name__ == "__main__":
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(ps3_P1A))
-    # suite.addTest(unittest.makeSuite(ps3_P1B))
-    # suite.addTest(unittest.makeSuite(ps3_P2_ER))
-    # suite.addTest(unittest.makeSuite(ps3_P2_FR))
+
+    # suite.addTest(unittest.makeSuite(ps3_P1A))  # Passed 2021-01-11
+    # suite.addTest(unittest.makeSuite(ps3_P1B))  # Passed 2021-01-13
+    # suite.addTest(unittest.makeSuite(ps3_P2_ER))  # Passed 2021-01-13
+    suite.addTest(unittest.makeSuite(ps3_P2_FR))
     # suite.addTest(unittest.makeSuite(ps3_P3))
     # suite.addTest(unittest.makeSuite(ps3_P5_Standard))
     # suite.addTest(unittest.makeSuite(ps3_P5_Faulty))

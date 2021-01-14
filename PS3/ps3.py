@@ -379,6 +379,7 @@ class FurnishedRoom(RectangularRoom):
 
         return Position(self.pos[0], self.pos[1])
 
+
 # === Problem 3
 class StandardRobot(Robot):
     """
